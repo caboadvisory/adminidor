@@ -1,10 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
+import { listDocuments } from "@/modules/documents/queries";
 import type {
   AmlScreening,
   BeneficialOwner,
   Client,
   ClientDetail,
-  ClientDocument,
   ClientListItem,
 } from "./types";
 
@@ -70,20 +70,6 @@ function mapAmlScreening(row: any): AmlScreening {
   };
 }
 
-function mapDocument(row: any): ClientDocument {
-  return {
-    id: row.id,
-    ownerType: row.owner_type,
-    ownerId: row.owner_id,
-    fileName: row.file_name,
-    r2Key: row.r2_key,
-    contentType: row.content_type,
-    sizeBytes: row.size_bytes == null ? null : Number(row.size_bytes),
-    uploadedBy: row.uploaded_by,
-    createdAt: row.created_at,
-  };
-}
-
 export async function listClients(): Promise<ClientListItem[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -116,14 +102,7 @@ export async function getClient(id: string): Promise<ClientDetail | null> {
   if (error) throw error;
   if (!data) return null;
 
-  const { data: docs, error: docsError } = await supabase
-    .from("documents")
-    .select("*")
-    .eq("owner_type", "client")
-    .eq("owner_id", id)
-    .order("created_at", { ascending: false });
-
-  if (docsError) throw docsError;
+  const documents = await listDocuments("client", id);
 
   const beneficialOwners = ((data as any).beneficial_owners ?? [])
     .map(mapBeneficialOwner)
@@ -142,6 +121,6 @@ export async function getClient(id: string): Promise<ClientDetail | null> {
     ...mapClient(data),
     beneficialOwners,
     amlScreenings,
-    documents: (docs ?? []).map(mapDocument),
+    documents,
   };
 }

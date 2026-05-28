@@ -9,8 +9,8 @@ import {
   attachDocument,
   deleteDocument,
   getDocumentDownloadUrl,
-} from "@/modules/clients/actions";
-import type { ClientDocument } from "@/modules/clients/types";
+} from "@/modules/documents/actions";
+import type { DocumentOwnerType, StoredDocument } from "@/modules/documents/types";
 
 function formatSize(bytes: number | null) {
   if (bytes == null) return "";
@@ -20,15 +20,17 @@ function formatSize(bytes: number | null) {
 }
 
 export function DocumentsSection({
-  clientId,
+  ownerType,
+  ownerId,
   documents,
   r2Configured,
 }: {
-  clientId: string;
-  documents: ClientDocument[];
+  ownerType: DocumentOwnerType;
+  ownerId: string;
+  documents: StoredDocument[];
   r2Configured: boolean;
 }) {
-  const t = useTranslations("clients");
+  const t = useTranslations("documents");
   const tc = useTranslations("common");
   const locale = useLocale();
   const router = useRouter();
@@ -39,11 +41,7 @@ export function DocumentsSection({
   const dateFmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
 
   if (!r2Configured) {
-    return (
-      <p className="text-sm text-foreground/60">
-        {t("documents.notConfigured")}
-      </p>
-    );
+    return <p className="text-sm text-foreground/60">{t("notConfigured")}</p>;
   }
 
   async function onUpload() {
@@ -57,8 +55,8 @@ export function DocumentsSection({
       const { url, key } = await requestUploadUrl({
         fileName: file.name,
         contentType,
-        ownerType: "client",
-        ownerId: clientId,
+        ownerType,
+        ownerId,
       });
       const put = await fetch(url, {
         method: "PUT",
@@ -68,7 +66,8 @@ export function DocumentsSection({
       if (!put.ok) throw new Error("upload failed");
 
       const res = await attachDocument({
-        ownerId: clientId,
+        ownerType,
+        ownerId,
         fileName: file.name,
         r2Key: key,
         contentType,
@@ -79,7 +78,7 @@ export function DocumentsSection({
       if (fileRef.current) fileRef.current.value = "";
       router.refresh();
     } catch {
-      setError(t("errors.generic"));
+      setError(t("error"));
     } finally {
       setUploading(false);
     }
@@ -91,14 +90,14 @@ export function DocumentsSection({
   }
 
   async function onDelete(id: string) {
-    const res = await deleteDocument(id, clientId);
+    const res = await deleteDocument({ id, ownerType, ownerId });
     if (res.ok) router.refresh();
   }
 
   return (
     <div className="space-y-4">
       {documents.length === 0 ? (
-        <p className="text-sm text-foreground/60">{t("documents.empty")}</p>
+        <p className="text-sm text-foreground/60">{t("empty")}</p>
       ) : (
         <ul className="divide-y divide-black/[.06] dark:divide-white/[.08]">
           {documents.map((d) => (
@@ -119,7 +118,7 @@ export function DocumentsSection({
                   onClick={() => onDownload(d.id)}
                   className="text-xs hover:underline"
                 >
-                  {t("documents.download")}
+                  {t("download")}
                 </button>
                 <button
                   type="button"
@@ -146,7 +145,7 @@ export function DocumentsSection({
           onClick={onUpload}
           disabled={uploading}
         >
-          {uploading ? t("documents.uploading") : t("documents.upload")}
+          {uploading ? t("uploading") : t("upload")}
         </Button>
       </div>
       {error ? (

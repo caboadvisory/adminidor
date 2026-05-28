@@ -84,13 +84,3 @@ export const amlScreeningInputSchema = z.object({
 });
 
 export type AmlScreeningInput = z.infer<typeof amlScreeningInputSchema>;
-
-export const documentMetaSchema = z.object({
-  ownerId: z.uuid(),
-  fileName: z.string().trim().min(1).max(255),
-  r2Key: z.string().trim().min(1).max(500),
-  contentType: nullableText(150),
-  sizeBytes: z.number().int().nonnegative().nullable().optional(),
-});
-
-export type DocumentMeta = z.infer<typeof documentMetaSchema>;

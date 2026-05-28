@@ -117,22 +117,55 @@
       "hit": "Träff",
       "pending": "Pågående"
     },
-    "documents": {
-      "upload": "Ladda upp dokument",
-      "uploading": "Laddar upp…",
-      "download": "Ladda ner",
-      "empty": "Inga dokument uppladdade.",
-      "notConfigured": "Fillagring är inte konfigurerad."
-    },
     "errors": {
       "forbidden": "Du har inte behörighet att göra detta.",
       "generic": "Något gick fel. Försök igen.",
       "validation": "Kontrollera formuläret och försök igen."
     }
   },
+  "documents": {
+    "upload": "Ladda upp dokument",
+    "uploading": "Laddar upp…",
+    "download": "Ladda ner",
+    "empty": "Inga dokument uppladdade.",
+    "notConfigured": "Fillagring är inte konfigurerad.",
+    "error": "Uppladdningen misslyckades. Försök igen."
+  },
   "projects": {
     "title": "Projekt",
-    "empty": "Inga projekt ännu. Den här modulen kommer snart."
+    "empty": "Inga projekt ännu.",
+    "new": "Nytt projekt",
+    "createTitle": "Nytt projekt",
+    "editTitle": "Redigera projekt",
+    "backToList": "Tillbaka till projekt",
+    "deleteConfirm": "Radera detta projekt? Detta kan inte ångras.",
+    "count": "{count, plural, =0 {Inga projekt} one {# projekt} other {# projekt}}",
+    "noClients": "Skapa en klient först — projekt kopplas till en klient.",
+    "fields": {
+      "client": "Klient",
+      "name": "Namn",
+      "code": "Kod",
+      "status": "Status",
+      "hourlyRate": "Timpris",
+      "currency": "Valuta",
+      "startDate": "Startdatum",
+      "endDate": "Slutdatum"
+    },
+    "status": {
+      "active": "Aktivt",
+      "on_hold": "Pausat",
+      "completed": "Avslutat",
+      "archived": "Arkiverat"
+    },
+    "sections": {
+      "details": "Uppgifter",
+      "documents": "Dokument"
+    },
+    "errors": {
+      "forbidden": "Du har inte behörighet att göra detta.",
+      "generic": "Något gick fel. Försök igen.",
+      "validation": "Kontrollera formuläret och försök igen."
+    }
   },
   "time": {
     "title": "Tidrapportering",

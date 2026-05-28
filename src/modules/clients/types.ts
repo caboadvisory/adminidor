@@ -1,3 +1,5 @@
+import type { StoredDocument } from "@/modules/documents/types";
+
 export type ClientType = "individual" | "entity";
 export type KycStatus =
   | "not_started"
@@ -8,7 +10,6 @@ export type KycStatus =
 export type RiskLevel = "low" | "medium" | "high";
 export type AmlScreeningType = "pep" | "sanctions" | "adverse_media";
 export type AmlScreeningResult = "clear" | "hit" | "pending";
-export type DocumentOwnerType = "client" | "project";
 
 export type Client = {
   id: string;
@@ -77,20 +78,8 @@ export type AmlScreening = {
   createdAt: string;
 };
 
-export type ClientDocument = {
-  id: string;
-  ownerType: DocumentOwnerType;
-  ownerId: string;
-  fileName: string;
-  r2Key: string;
-  contentType: string | null;
-  sizeBytes: number | null;
-  uploadedBy: string | null;
-  createdAt: string;
-};
-
 export type ClientDetail = Client & {
   beneficialOwners: BeneficialOwner[];
   amlScreenings: AmlScreening[];
-  documents: ClientDocument[];
+  documents: StoredDocument[];
 };

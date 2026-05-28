@@ -7,7 +7,7 @@ import { isR2Configured } from "@/lib/r2/config";
 import { AmlScreeningsSection } from "@/modules/clients/components/aml-screenings-section";
 import { BeneficialOwnersSection } from "@/modules/clients/components/beneficial-owners-section";
 import { DeleteClientButton } from "@/modules/clients/components/delete-client-button";
-import { DocumentsSection } from "@/modules/clients/components/documents-section";
+import { DocumentsSection } from "@/modules/documents/components/documents-section";
 import { kycStatusTone, riskTone } from "@/modules/clients/display";
 import { getClient } from "@/modules/clients/queries";
 
@@ -169,7 +169,8 @@ export default async function ClientDetailPage({ params }: Props) {
       <Card className="space-y-4">
         <h2 className={sectionTitle}>{t("sections.documents")}</h2>
         <DocumentsSection
-          clientId={id}
+          ownerType="client"
+          ownerId={id}
           documents={client.documents}
           r2Configured={isR2Configured()}
         />

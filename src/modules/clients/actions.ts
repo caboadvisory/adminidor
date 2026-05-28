@@ -3,14 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { getLocale } from "next-intl/server";
 import { createClient as createServerSupabase } from "@/lib/supabase/server";
-import { isR2Configured } from "@/lib/r2/config";
-import { createDownloadUrl } from "@/lib/r2/presign";
-import { deleteObject } from "@/lib/r2/storage";
 import {
   amlScreeningInputSchema,
   beneficialOwnerInputSchema,
   clientInputSchema,
-  documentMetaSchema,
   type ClientInput,
 } from "./schema";
 
@@ -233,76 +229,4 @@ export async function deleteAmlScreening(
 
   await revalidateClient(clientId);
   return { ok: true };
-}
-
-// --- Documents (metadata; files live in R2) --------------------------------
-
-export async function attachDocument(input: unknown): Promise<ActionResult> {
-  const parsed = documentMetaSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "validation" };
-
-  const { supabase, user } = await getUserAndRole();
-  if (!user) return { ok: false, error: "forbidden" };
-
-  const { error } = await supabase.from("documents").insert({
-    owner_type: "client",
-    owner_id: parsed.data.ownerId,
-    file_name: parsed.data.fileName,
-    r2_key: parsed.data.r2Key,
-    content_type: parsed.data.contentType,
-    size_bytes: parsed.data.sizeBytes ?? null,
-    uploaded_by: user.id,
-  });
-
-  if (error) return { ok: false, error: error.message };
-
-  await revalidateClient(parsed.data.ownerId);
-  return { ok: true };
-}
-
-export async function deleteDocument(
-  id: string,
-  clientId: string,
-): Promise<ActionResult> {
-  const { supabase, user } = await getUserAndRole();
-  if (!user) return { ok: false, error: "forbidden" };
-
-  const { data: doc, error: fetchError } = await supabase
-    .from("documents")
-    .select("r2_key")
-    .eq("id", id)
-    .maybeSingle();
-  if (fetchError) return { ok: false, error: fetchError.message };
-
-  const { error } = await supabase.from("documents").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
-
-  if (doc?.r2_key && isR2Configured()) {
-    try {
-      await deleteObject(doc.r2_key);
-    } catch {
-      // DB row is gone; an orphaned R2 object is acceptable and can be swept later.
-    }
-  }
-
-  await revalidateClient(clientId);
-  return { ok: true };
-}
-
-export async function getDocumentDownloadUrl(
-  id: string,
-): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
-  const { supabase, user } = await getUserAndRole();
-  if (!user) return { ok: false, error: "forbidden" };
-  if (!isR2Configured()) return { ok: false, error: "r2_not_configured" };
-
-  const { data: doc, error } = await supabase
-    .from("documents")
-    .select("r2_key")
-    .eq("id", id)
-    .maybeSingle();
-  if (error || !doc) return { ok: false, error: "not_found" };
-
-  const url = await createDownloadUrl(doc.r2_key);
-  return { ok: true, url };
 }

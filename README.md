@@ -7,7 +7,7 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 | Module | Status | Notes |
 | ------ | ------ | ----- |
 | **Clients** | Built | Individuals & legal entities, KYC, beneficial owners (UBO), AML screening, and document storage |
-| **Projects** | Scaffolded | Types + queries + placeholder page; full CRUD pending |
+| **Projects** | Built | Linked to a client; status, hourly rate, currency, dates, and R2 document storage |
 | **Time reporting** | Scaffolded | Types + queries + placeholder page; full CRUD pending |
 
 ### Clients — KYC / AML
@@ -17,6 +17,12 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 - **Beneficial owners (UBO):** for entities — name, DOB, nationality, ownership %, and PEP flag.
 - **AML screening:** a provider-ready log of point-in-time checks — type (`pep`, `sanctions`, `adverse_media`), result (`clear`/`hit`/`pending`), provider, external reference, and notes. Designed so a screening-provider API can be plugged in later.
 - **Documents:** files stored in Cloudflare R2 via presigned URLs (upload / download / delete); metadata kept in Postgres.
+
+### Projects
+
+- Each project belongs to a **client**. Fields: name, code, status (`active`, `on_hold`, `completed`, `archived`), hourly rate + currency, and start / end dates.
+- **Documents:** engagement letters and other files stored in Cloudflare R2 (the same shared upload flow as Clients).
+- Admin-write; all staff can read.
 
 ## Tech stack
 
@@ -72,7 +78,7 @@ Secrets live in `.env.local` (gitignored). `.env.example` documents every variab
 - Sign-in is email + password (Supabase). There is no public sign-up in the UI — staff accounts are created by an admin.
 - Every `auth.users` row auto-creates a `profiles` row (via a DB trigger) with role **`member`**.
 - **Roles:**
-  - `admin` — full write access to clients and all KYC/AML records (and, going forward, projects).
+  - `admin` — full write access to clients, KYC/AML records, and projects.
   - `member` — reads all firm data; manages their own time entries and their own document uploads.
 
 **Create the first admin user.** Add a user in the Supabase dashboard (Authentication → Users → Add user, with "auto-confirm"), then promote it:
@@ -155,7 +161,9 @@ src/
   messages/                    # en.json, sv.json, es.json
   modules/
     clients/                   # types, schema (zod), queries, actions, display, components/
-    projects/  time/           # types + queries stubs
+    projects/                  # same shape as clients (no KYC/AML)
+    documents/                 # shared R2 document module (used by clients & projects)
+    time/                      # types + queries stub
   proxy.ts                     # Next.js 16 middleware: locale routing + Supabase session refresh
 supabase/migrations/           # 0001_init.sql, 0002_clients_kyc_aml.sql
 ```
@@ -181,6 +189,14 @@ supabase/migrations/           # 0001_init.sql, 0002_clients_kyc_aml.sql
 **Development**
 
 - `typescript`, `@types/*`, `tailwindcss` + `@tailwindcss/postcss`, `eslint` + `eslint-config-next`
+
+## Status & roadmap
+
+- ✅ **Foundation** — localized, auth-guarded app shell; Supabase auth with a single-firm, role-based RLS model; Cloudflare R2 storage; i18n (en/sv/es).
+- ✅ **Clients** — full CRUD with KYC, beneficial owners (UBO), AML screening, and documents.
+- ✅ **Projects** — full CRUD linked to clients, with documents.
+- ⬜ **Time reporting** — the `time_entries` table and RLS exist; module UI and actions are pending.
+- ⬜ **Future** — dashboard metrics, AML screening-provider integration, project ↔ time reporting, and deployment.
 
 ## Learn more
 

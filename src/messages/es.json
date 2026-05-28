@@ -117,22 +117,55 @@
       "hit": "Coincidencia",
       "pending": "Pendiente"
     },
-    "documents": {
-      "upload": "Subir documento",
-      "uploading": "Subiendo…",
-      "download": "Descargar",
-      "empty": "No hay documentos subidos.",
-      "notConfigured": "El almacenamiento de archivos no está configurado."
-    },
     "errors": {
       "forbidden": "No tienes permiso para hacer esto.",
       "generic": "Algo salió mal. Inténtalo de nuevo.",
       "validation": "Revisa el formulario e inténtalo de nuevo."
     }
   },
+  "documents": {
+    "upload": "Subir documento",
+    "uploading": "Subiendo…",
+    "download": "Descargar",
+    "empty": "No hay documentos subidos.",
+    "notConfigured": "El almacenamiento de archivos no está configurado.",
+    "error": "La subida falló. Inténtalo de nuevo."
+  },
   "projects": {
     "title": "Proyectos",
-    "empty": "Aún no hay proyectos. Este módulo estará disponible pronto."
+    "empty": "Aún no hay proyectos.",
+    "new": "Nuevo proyecto",
+    "createTitle": "Nuevo proyecto",
+    "editTitle": "Editar proyecto",
+    "backToList": "Volver a proyectos",
+    "deleteConfirm": "¿Eliminar este proyecto? Esto no se puede deshacer.",
+    "count": "{count, plural, =0 {Sin proyectos} one {# proyecto} other {# proyectos}}",
+    "noClients": "Crea un cliente primero — los proyectos se vinculan a un cliente.",
+    "fields": {
+      "client": "Cliente",
+      "name": "Nombre",
+      "code": "Código",
+      "status": "Estado",
+      "hourlyRate": "Tarifa por hora",
+      "currency": "Moneda",
+      "startDate": "Fecha de inicio",
+      "endDate": "Fecha de fin"
+    },
+    "status": {
+      "active": "Activo",
+      "on_hold": "En pausa",
+      "completed": "Completado",
+      "archived": "Archivado"
+    },
+    "sections": {
+      "details": "Datos",
+      "documents": "Documentos"
+    },
+    "errors": {
+      "forbidden": "No tienes permiso para hacer esto.",
+      "generic": "Algo salió mal. Inténtalo de nuevo.",
+      "validation": "Revisa el formulario e inténtalo de nuevo."
+    }
   },
   "time": {
     "title": "Registro de horas",

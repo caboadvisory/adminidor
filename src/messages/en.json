@@ -117,22 +117,55 @@
       "hit": "Hit",
       "pending": "Pending"
     },
-    "documents": {
-      "upload": "Upload document",
-      "uploading": "Uploading…",
-      "download": "Download",
-      "empty": "No documents uploaded.",
-      "notConfigured": "File storage is not configured."
-    },
     "errors": {
       "forbidden": "You don't have permission to do this.",
       "generic": "Something went wrong. Please try again.",
       "validation": "Please check the form and try again."
     }
   },
+  "documents": {
+    "upload": "Upload document",
+    "uploading": "Uploading…",
+    "download": "Download",
+    "empty": "No documents uploaded.",
+    "notConfigured": "File storage is not configured.",
+    "error": "Upload failed. Please try again."
+  },
   "projects": {
     "title": "Projects",
-    "empty": "No projects yet. This module is coming soon."
+    "empty": "No projects yet.",
+    "new": "New project",
+    "createTitle": "New project",
+    "editTitle": "Edit project",
+    "backToList": "Back to projects",
+    "deleteConfirm": "Delete this project? This cannot be undone.",
+    "count": "{count, plural, =0 {No projects} one {# project} other {# projects}}",
+    "noClients": "Create a client first — projects are linked to a client.",
+    "fields": {
+      "client": "Client",
+      "name": "Name",
+      "code": "Code",
+      "status": "Status",
+      "hourlyRate": "Hourly rate",
+      "currency": "Currency",
+      "startDate": "Start date",
+      "endDate": "End date"
+    },
+    "status": {
+      "active": "Active",
+      "on_hold": "On hold",
+      "completed": "Completed",
+      "archived": "Archived"
+    },
+    "sections": {
+      "details": "Details",
+      "documents": "Documents"
+    },
+    "errors": {
+      "forbidden": "You don't have permission to do this.",
+      "generic": "Something went wrong. Please try again.",
+      "validation": "Please check the form and try again."
+    }
   },
   "time": {
     "title": "Time reporting",
