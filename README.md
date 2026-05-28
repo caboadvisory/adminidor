@@ -1,16 +1,31 @@
 # Adminidor
 
-A modular administrative web app for a small consultancy / law firm. Modern, clean UI with multilingual support (English, Swedish, Spanish) from the outset.
+A modular administrative web app for a small consultancy / law firm. Modern, clean UI with multilingual support (English, Swedish, Spanish) from the outset, built around a single-firm model where staff have roles.
 
-First three modules: **Clients** (built — with KYC/AML, beneficial owners, and R2 document uploads), **Projects**, and **Time reporting** (scaffolded).
+## Modules
+
+| Module | Status | Notes |
+| ------ | ------ | ----- |
+| **Clients** | Built | Individuals & legal entities, KYC, beneficial owners (UBO), AML screening, and document storage |
+| **Projects** | Scaffolded | Types + queries + placeholder page; full CRUD pending |
+| **Time reporting** | Scaffolded | Types + queries + placeholder page; full CRUD pending |
+
+### Clients — KYC / AML
+
+- **Client types:** individual (name, DOB, nationality, national ID/tax no.) or legal entity (legal name, registration number, jurisdiction, legal form).
+- **KYC:** status (`not_started`, `in_progress`, `verified`, `rejected`, `expired`), risk rating (`low`/`medium`/`high`), verification timestamp (set automatically when status becomes `verified`), and a periodic review date.
+- **Beneficial owners (UBO):** for entities — name, DOB, nationality, ownership %, and PEP flag.
+- **AML screening:** a provider-ready log of point-in-time checks — type (`pep`, `sanctions`, `adverse_media`), result (`clear`/`hit`/`pending`), provider, external reference, and notes. Designed so a screening-provider API can be plugged in later.
+- **Documents:** files stored in Cloudflare R2 via presigned URLs (upload / download / delete); metadata kept in Postgres.
 
 ## Tech stack
 
-- **Next.js 16** (App Router, Turbopack) + **React 19** + **TypeScript**
-- **Tailwind CSS v4** (CSS-first config)
+- **Next.js 16** (App Router, Turbopack) + **React 19** + **TypeScript** (strict)
+- **Tailwind CSS v4** (CSS-first config; no `tailwind.config.js`)
 - **next-intl** for i18n (`en` default, `sv`, `es`) via a `[locale]` route segment
 - **Supabase** for authentication and Postgres (with Row Level Security)
 - **Cloudflare R2** for file storage (S3-compatible, presigned uploads)
+- **zod** for input validation at server-action boundaries
 
 ## Getting started
 
@@ -18,15 +33,17 @@ First three modules: **Clients** (built — with KYC/AML, beneficial owners, and
    ```bash
    npm install
    ```
-2. Create your env file and fill in values:
+2. Create your env file and fill in values (see [Environment](#environment)):
    ```bash
    cp .env.example .env.local
    ```
-   See [Environment](#environment) below.
-3. Apply the database migrations to your Supabase project **in order** — `supabase/migrations/0001_init.sql`
-   then `0002_clients_kyc_aml.sql` (via the Supabase SQL editor, or `supabase db push` with the Supabase CLI).
-   Note: browser document uploads require the R2 bucket's CORS to allow `PUT` from your app origin.
-4. Run the dev server:
+3. Apply the database migrations to your Supabase project **in order** via the SQL editor
+   (or `supabase db push`):
+   - `supabase/migrations/0001_init.sql`
+   - `supabase/migrations/0002_clients_kyc_aml.sql`
+4. Configure the **R2 bucket CORS** policy so the browser can upload (see [File storage](#file-storage-cloudflare-r2)).
+5. Create an admin user (see [Authentication & roles](#authentication--roles)).
+6. Run the dev server:
    ```bash
    npm run dev
    ```
@@ -37,39 +54,119 @@ First three modules: **Clients** (built — with KYC/AML, beneficial owners, and
 
 ## Environment
 
-| Variable                        | Scope        | Purpose                                  |
-| ------------------------------- | ------------ | ---------------------------------------- |
-| `NEXT_PUBLIC_SUPABASE_URL`      | Public       | Supabase project URL                     |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public       | Supabase anon key                        |
-| `SUPABASE_SERVICE_ROLE_KEY`     | Server only  | Service-role key for admin operations    |
-| `R2_ACCOUNT_ID`                 | Server only  | Cloudflare account id (derives endpoint) |
-| `R2_ACCESS_KEY_ID`              | Server only  | R2 access key                            |
-| `R2_SECRET_ACCESS_KEY`          | Server only  | R2 secret key                            |
-| `R2_BUCKET`                     | Server only  | R2 bucket name                           |
-| `R2_ENDPOINT`                   | Server only  | Optional; overrides the derived endpoint |
+Secrets live in `.env.local` (gitignored). `.env.example` documents every variable and is committed.
+
+| Variable                        | Scope        | Purpose                                            |
+| ------------------------------- | ------------ | -------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Public       | Supabase project URL                               |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public       | Supabase anon key                                  |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Server only  | Service-role key for admin/server operations       |
+| `R2_ACCOUNT_ID`                 | Server only  | Cloudflare account id (used to derive the endpoint) |
+| `R2_ACCESS_KEY_ID`              | Server only  | R2 access key                                      |
+| `R2_SECRET_ACCESS_KEY`          | Server only  | R2 secret key                                      |
+| `R2_BUCKET`                     | Server only  | R2 bucket name                                     |
+| `R2_ENDPOINT`                   | Server only  | Optional; overrides the endpoint derived from the account id |
+
+## Authentication & roles
+
+- Sign-in is email + password (Supabase). There is no public sign-up in the UI — staff accounts are created by an admin.
+- Every `auth.users` row auto-creates a `profiles` row (via a DB trigger) with role **`member`**.
+- **Roles:**
+  - `admin` — full write access to clients and all KYC/AML records (and, going forward, projects).
+  - `member` — reads all firm data; manages their own time entries and their own document uploads.
+
+**Create the first admin user.** Add a user in the Supabase dashboard (Authentication → Users → Add user, with "auto-confirm"), then promote it:
+
+```sql
+update public.profiles
+set role = 'admin'
+where id = (select id from auth.users where email = 'you@example.com');
+```
+
+## Data model
+
+Postgres tables (all with Row Level Security enabled):
+
+- `profiles` — 1:1 with `auth.users`; role (`admin`/`member`), preferred locale.
+- `clients` — type (individual/entity), contact + address, KYC status/risk/review dates, and identifying fields (incl. sensitive `national_id`).
+- `beneficial_owners` — UBO records linked to a client.
+- `aml_screenings` — AML screening log linked to a client.
+- `projects` — linked to a client (status, rate, dates).
+- `time_entries` — linked to a project and a user.
+- `documents` — R2 object metadata (owner type/id, key, filename, size).
+
+**RLS summary:** authenticated staff can read all firm data; clients and KYC/AML records are admin-write; users manage their own time entries and document uploads. Admin checks use a `public.is_admin()` `SECURITY DEFINER` function to avoid policy recursion. Schema changes live in `supabase/migrations/` and must be applied in order.
+
+## File storage (Cloudflare R2)
+
+Uploads go **browser → R2** using a short-lived presigned `PUT` URL minted server-side; the file's metadata is then recorded in `documents`. Downloads use a presigned `GET`. Server-side access needs no CORS, but **browser uploads require a CORS policy** on the bucket.
+
+Apply this in the Cloudflare dashboard (R2 → your bucket → Settings → CORS Policy). Add your production origin alongside localhost when you deploy:
+
+```json
+[
+  {
+    "AllowedOrigins": ["http://localhost:3000"],
+    "AllowedMethods": ["GET", "PUT"],
+    "AllowedHeaders": ["content-type"],
+    "ExposeHeaders": ["ETag"],
+    "MaxAgeSeconds": 3600
+  }
+]
+```
+
+## Internationalization
+
+- Locales: **English** (`en`, default), **Swedish** (`sv`), **Spanish** (`es`). All routes are prefixed with the locale (e.g. `/sv/clients`), and the in-app switcher (top-right) re-localizes the current page.
+- Translations live in `src/messages/{en,sv,es}.json`; routing/config in `src/i18n/`.
+- **To add a locale:** add it to `src/i18n/routing.ts` and create a matching `src/messages/<locale>.json`.
 
 ## Scripts
 
-| Command         | Description                                    |
-| --------------- | ---------------------------------------------- |
-| `npm run dev`   | Start the dev server (Turbopack) on port 3000  |
-| `npm run build` | Create a production build                       |
-| `npm run start` | Serve the production build                      |
-| `npm run lint`  | Run ESLint                                      |
+| Command            | Description                                    |
+| ------------------ | ---------------------------------------------- |
+| `npm run dev`      | Start the dev server (Turbopack) on port 3000  |
+| `npm run build`    | Create a production build                       |
+| `npm run start`    | Serve the production build                      |
+| `npm run lint`     | Run ESLint                                      |
+| `npx tsc --noEmit` | Type-check without emitting                     |
 
 ## Project structure
 
 ```
 src/
-  app/[locale]/        # localized routes: (auth)/login, (app)/{dashboard,clients,projects,time}
-  components/          # app-shell (sidebar, locale switcher, user menu) and ui primitives
-  i18n/                # next-intl routing, navigation, request config
-  lib/                 # supabase clients, R2 client + presign, shared utils
-  messages/            # en.json, sv.json, es.json
-  modules/             # feature modules: clients, projects, time (types + queries)
-  proxy.ts             # next-intl routing + Supabase session refresh (Next.js 16 middleware)
-supabase/migrations/   # SQL schema + RLS
+  app/[locale]/
+    layout.tsx                 # root layout: <html>, fonts, NextIntlClientProvider
+    (auth)/login/              # public login (page + client form)
+    (app)/                     # auth-guarded shell
+      layout.tsx               # guard + sidebar/topbar shell
+      page.tsx                 # dashboard
+      clients/                 # list, new, [id] (detail), [id]/edit
+      projects/  time/         # placeholder pages
+  components/
+    app-shell/                 # sidebar, locale switcher, user menu
+    ui/                        # button, input, card, badge, select, textarea
+  i18n/                        # routing, navigation, request config
+  lib/
+    supabase/                  # server, client, middleware, config, auth helpers
+    r2/                        # client, presign, storage, config, upload action
+    auth-actions.ts            # sign-out
+    utils.ts                   # cn()
+  messages/                    # en.json, sv.json, es.json
+  modules/
+    clients/                   # types, schema (zod), queries, actions, display, components/
+    projects/  time/           # types + queries stubs
+  proxy.ts                     # Next.js 16 middleware: locale routing + Supabase session refresh
+supabase/migrations/           # 0001_init.sql, 0002_clients_kyc_aml.sql
 ```
+
+## Architecture notes
+
+- **Routing:** everything lives under `src/app/[locale]/`; `[locale]/layout.tsx` is the root layout (there is no `src/app/layout.tsx`). Navigate with the wrappers from `@/i18n/navigation`, not `next/link`/`next/navigation`, to preserve locale prefixes.
+- **Middleware:** Next.js 16 renames `middleware` → `proxy`; `src/proxy.ts` runs next-intl routing and Supabase session refresh in one pass.
+- **Async request APIs:** Next.js 16 requires `await params` and `await cookies()`.
+- **Tailwind v4** is CSS-first — theme tokens are defined in `src/app/globals.css` (`@import "tailwindcss"` + `@theme inline`), not a JS config.
+- `next.config.ts` pins `turbopack.root` to silence a workspace-root warning from a stray home-directory lockfile.
 
 ## Dependencies
 
@@ -85,7 +182,7 @@ supabase/migrations/   # SQL schema + RLS
 
 - `typescript`, `@types/*`, `tailwindcss` + `@tailwindcss/postcss`, `eslint` + `eslint-config-next`
 
-## Learn More
+## Learn more
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [next-intl Documentation](https://next-intl.dev/docs)
