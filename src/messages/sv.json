@@ -1,0 +1,45 @@
+{
+  "app": {
+    "name": "Adminidor",
+    "tagline": "Administration för moderna rådgivningsbyråer"
+  },
+  "nav": {
+    "dashboard": "Översikt",
+    "clients": "Klienter",
+    "projects": "Projekt",
+    "time": "Tidrapportering"
+  },
+  "auth": {
+    "signIn": "Logga in",
+    "signOut": "Logga ut",
+    "email": "E-post",
+    "password": "Lösenord",
+    "signInTitle": "Logga in på Adminidor",
+    "signInSubtitle": "Ange dina uppgifter för att fortsätta",
+    "signingIn": "Loggar in…",
+    "invalidCredentials": "Felaktig e-post eller lösenord.",
+    "notConfigured": "Autentisering är inte konfigurerad ännu. Lägg till dina Supabase-uppgifter i .env.local.",
+    "genericError": "Något gick fel. Försök igen."
+  },
+  "dashboard": {
+    "title": "Översikt",
+    "welcome": "Välkommen tillbaka",
+    "subtitle": "En översikt av byråns aktivitet visas här."
+  },
+  "clients": {
+    "title": "Klienter",
+    "empty": "Inga klienter ännu. Den här modulen kommer snart."
+  },
+  "projects": {
+    "title": "Projekt",
+    "empty": "Inga projekt ännu. Den här modulen kommer snart."
+  },
+  "time": {
+    "title": "Tidrapportering",
+    "empty": "Inga tidsposter ännu. Den här modulen kommer snart."
+  },
+  "common": {
+    "language": "Språk",
+    "comingSoon": "Kommer snart"
+  }
+}

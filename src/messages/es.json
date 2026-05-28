@@ -1,0 +1,45 @@
+{
+  "app": {
+    "name": "Adminidor",
+    "tagline": "Administración para firmas de asesoría modernas"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "clients": "Clientes",
+    "projects": "Proyectos",
+    "time": "Registro de horas"
+  },
+  "auth": {
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "signInTitle": "Inicia sesión en Adminidor",
+    "signInSubtitle": "Introduce tus credenciales para continuar",
+    "signingIn": "Iniciando sesión…",
+    "invalidCredentials": "Correo o contraseña incorrectos.",
+    "notConfigured": "La autenticación aún no está configurada. Añade tus credenciales de Supabase en .env.local.",
+    "genericError": "Algo salió mal. Inténtalo de nuevo."
+  },
+  "dashboard": {
+    "title": "Panel",
+    "welcome": "Bienvenido de nuevo",
+    "subtitle": "Aquí aparecerá un resumen de la actividad de tu firma."
+  },
+  "clients": {
+    "title": "Clientes",
+    "empty": "Aún no hay clientes. Este módulo estará disponible pronto."
+  },
+  "projects": {
+    "title": "Proyectos",
+    "empty": "Aún no hay proyectos. Este módulo estará disponible pronto."
+  },
+  "time": {
+    "title": "Registro de horas",
+    "empty": "Aún no hay registros de horas. Este módulo estará disponible pronto."
+  },
+  "common": {
+    "language": "Idioma",
+    "comingSoon": "Próximamente"
+  }
+}
