@@ -15,7 +15,7 @@ export async function getTimesheet(
   const { data, error } = await supabase
     .from("time_entries")
     .select(
-      "work_date, minutes, description, amount, project_id, projects!inner(name, currency, client_id)",
+      "work_date, minutes, description, amount, billable, project_id, projects!inner(name, currency, client_id)",
     )
     .eq("projects.client_id", params.clientId)
     .gte("work_date", params.from)
@@ -45,9 +45,11 @@ export async function getTimesheet(
       minutes: row.minutes,
       description: row.description,
       amount,
+      billable: row.billable,
     });
     group.subtotalMinutes += row.minutes;
-    group.subtotalAmount += amount ?? 0;
+    // Only billable entries contribute to the cost subtotal.
+    group.subtotalAmount += row.billable && amount != null ? amount : 0;
   }
 
   const groups = Array.from(groupsMap.values()).sort((a, b) =>

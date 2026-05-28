@@ -225,6 +225,7 @@
       "project": "Project",
       "subtotal": "Subtotal",
       "total": "Total",
+      "nonBillable": "Non-billable",
       "columns": {
         "date": "Date",
         "hours": "Hours",

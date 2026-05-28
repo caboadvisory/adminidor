@@ -3,6 +3,7 @@ export type TimesheetRow = {
   minutes: number;
   description: string | null;
   amount: number | null;
+  billable: boolean;
 };
 
 export type TimesheetGroup = {

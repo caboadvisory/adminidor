@@ -225,6 +225,7 @@
       "project": "Projekt",
       "subtotal": "Delsumma",
       "total": "Totalt",
+      "nonBillable": "Ej fakturerbar",
       "columns": {
         "date": "Datum",
         "hours": "Timmar",

@@ -130,9 +130,16 @@ export default async function TimesheetReportPage({
                       </td>
                       <td className="px-4 py-2 text-foreground/70">
                         {r.description ?? "—"}
+                        {!r.billable ? (
+                          <span className="ml-2 text-xs text-foreground/40">
+                            ({t("timesheet.nonBillable")})
+                          </span>
+                        ) : null}
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap text-foreground/70">
-                        {r.amount != null ? money(r.amount, g.currency) : "—"}
+                        {r.billable && r.amount != null
+                          ? money(r.amount, g.currency)
+                          : "—"}
                       </td>
                     </tr>
                   ))}
