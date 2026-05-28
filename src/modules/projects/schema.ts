@@ -7,6 +7,8 @@ export const projectStatusEnum = z.enum([
   "archived",
 ]);
 
+export const projectBillingTypeEnum = z.enum(["hourly", "fixed"]);
+
 const emptyToNull = (v: unknown) => (v === "" || v == null ? null : v);
 
 const nullableText = (max: number) =>
@@ -35,6 +37,8 @@ export const projectInputSchema = z.object({
     (v) => (v === "" || v == null ? "SEK" : v),
     z.string().trim().min(1).max(10),
   ),
+  billingType: projectBillingTypeEnum,
+  fixedPrice: nullableNumber,
   startDate: nullableDate,
   endDate: nullableDate,
 });

@@ -29,6 +29,9 @@ function mapClient(row: any): Client {
     city: row.city,
     country: row.country,
     notes: row.notes,
+    defaultHourlyRate:
+      row.default_hourly_rate == null ? null : Number(row.default_hourly_rate),
+    defaultCurrency: row.default_currency,
     kycStatus: row.kyc_status,
     riskLevel: row.risk_level,
     kycVerifiedAt: row.kyc_verified_at,

@@ -54,7 +54,9 @@
       "postalCode": "Código postal",
       "city": "Ciudad",
       "country": "País",
-      "notes": "Notas"
+      "notes": "Notas",
+      "defaultHourlyRate": "Tarifa base por hora",
+      "currency": "Moneda"
     },
     "type": {
       "individual": "Persona física",
@@ -66,7 +68,8 @@
       "kyc": "KYC",
       "beneficialOwners": "Titulares reales",
       "aml": "Cribado AML",
-      "documents": "Documentos"
+      "documents": "Documentos",
+      "billing": "Facturación"
     },
     "kyc": {
       "status": "Estado KYC",
@@ -149,7 +152,9 @@
       "hourlyRate": "Tarifa por hora",
       "currency": "Moneda",
       "startDate": "Fecha de inicio",
-      "endDate": "Fecha de fin"
+      "endDate": "Fecha de fin",
+      "billingType": "Facturación",
+      "fixedPrice": "Precio fijo"
     },
     "status": {
       "active": "Activo",
@@ -157,9 +162,14 @@
       "completed": "Completado",
       "archived": "Archivado"
     },
+    "billing": {
+      "hourly": "Por horas",
+      "fixed": "Precio fijo"
+    },
     "sections": {
       "details": "Datos",
-      "documents": "Documentos"
+      "documents": "Documentos",
+      "time": "Tiempo y facturación"
     },
     "errors": {
       "forbidden": "No tienes permiso para hacer esto.",
@@ -169,7 +179,33 @@
   },
   "time": {
     "title": "Registro de horas",
-    "empty": "Aún no hay registros de horas. Este módulo estará disponible pronto."
+    "empty": "Aún no hay registros de horas.",
+    "new": "Registrar horas",
+    "createTitle": "Registrar horas",
+    "editTitle": "Editar registro de horas",
+    "backToList": "Volver al registro de horas",
+    "deleteConfirm": "¿Eliminar este registro de horas? Esto no se puede deshacer.",
+    "noProjects": "Crea un proyecto primero — las horas se registran en un proyecto.",
+    "count": "{count, plural, =0 {Sin registros} one {# registro} other {# registros}}",
+    "fields": {
+      "project": "Proyecto",
+      "date": "Fecha",
+      "hours": "Horas",
+      "description": "Descripción de la tarea",
+      "amount": "Importe",
+      "billable": "Facturable",
+      "user": "Usuario"
+    },
+    "summary": {
+      "loggedHours": "Horas registradas",
+      "billable": "Total facturable",
+      "fixedPrice": "Precio fijo"
+    },
+    "errors": {
+      "forbidden": "No tienes permiso para hacer esto.",
+      "generic": "Algo salió mal. Inténtalo de nuevo.",
+      "validation": "Revisa el formulario e inténtalo de nuevo."
+    }
   },
   "common": {
     "language": "Idioma",

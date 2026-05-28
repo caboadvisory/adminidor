@@ -19,6 +19,7 @@ const KYC_STATUSES = [
   "expired",
 ] as const;
 const RISK_LEVELS = ["low", "medium", "high"] as const;
+const CURRENCIES = ["SEK", "EUR", "USD", "GBP", "NOK", "DKK"];
 
 function Field({
   label,
@@ -56,6 +57,11 @@ export function ClientForm({ mode, clientId, initial }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const currentCurrency = initial?.defaultCurrency ?? "SEK";
+  const currencyOptions = CURRENCIES.includes(currentCurrency)
+    ? CURRENCIES
+    : [currentCurrency, ...CURRENCIES];
+
   function mapError(code: string) {
     if (code === "forbidden") return t("errors.forbidden");
     if (code === "validation") return t("errors.validation");
@@ -85,6 +91,8 @@ export function ClientForm({ mode, clientId, initial }: Props) {
       city: get("city"),
       country: get("country"),
       notes: get("notes"),
+      defaultHourlyRate: get("defaultHourlyRate"),
+      defaultCurrency: get("defaultCurrency"),
       kycStatus: get("kycStatus"),
       riskLevel: get("riskLevel"),
       kycReviewDue: get("kycReviewDue"),
@@ -241,6 +249,40 @@ export function ClientForm({ mode, clientId, initial }: Props) {
           </Field>
           <Field label={t("fields.country")} htmlFor="country">
             <Input id="country" name="country" defaultValue={initial?.country ?? ""} />
+          </Field>
+        </div>
+      </Card>
+
+      <Card className="space-y-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground/50">
+          {t("sections.billing")}
+        </h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field
+            label={t("fields.defaultHourlyRate")}
+            htmlFor="defaultHourlyRate"
+          >
+            <Input
+              id="defaultHourlyRate"
+              name="defaultHourlyRate"
+              type="number"
+              step="0.01"
+              min="0"
+              defaultValue={initial?.defaultHourlyRate ?? ""}
+            />
+          </Field>
+          <Field label={t("fields.currency")} htmlFor="defaultCurrency">
+            <Select
+              id="defaultCurrency"
+              name="defaultCurrency"
+              defaultValue={currentCurrency}
+            >
+              {currencyOptions.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </Select>
           </Field>
         </div>
       </Card>

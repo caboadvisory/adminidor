@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Link, useRouter } from "@/i18n/navigation";
 import { createProject, updateProject } from "@/modules/projects/actions";
-import type { Project } from "@/modules/projects/types";
+import type { Project, ProjectBillingType } from "@/modules/projects/types";
 
 const STATUSES = ["active", "on_hold", "completed", "archived"] as const;
 const CURRENCIES = ["SEK", "EUR", "USD", "GBP", "NOK", "DKK"];
@@ -45,6 +45,9 @@ export function ProjectForm({ mode, projectId, initial, clients }: Props) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [billingType, setBillingType] = useState<ProjectBillingType>(
+    initial?.billingType ?? "hourly",
+  );
 
   const currentCurrency = initial?.currency ?? "SEK";
   const currencyOptions = CURRENCIES.includes(currentCurrency)
@@ -70,6 +73,8 @@ export function ProjectForm({ mode, projectId, initial, clients }: Props) {
       status: get("status"),
       hourlyRate: get("hourlyRate"),
       currency: get("currency"),
+      billingType,
+      fixedPrice: get("fixedPrice"),
       startDate: get("startDate"),
       endDate: get("endDate"),
     };
@@ -160,6 +165,30 @@ export function ProjectForm({ mode, projectId, initial, clients }: Props) {
               ))}
             </Select>
           </Field>
+          <Field label={t("fields.billingType")} htmlFor="billingType">
+            <Select
+              id="billingType"
+              value={billingType}
+              onChange={(e) =>
+                setBillingType(e.target.value as ProjectBillingType)
+              }
+            >
+              <option value="hourly">{t("billing.hourly")}</option>
+              <option value="fixed">{t("billing.fixed")}</option>
+            </Select>
+          </Field>
+          {billingType === "fixed" ? (
+            <Field label={t("fields.fixedPrice")} htmlFor="fixedPrice">
+              <Input
+                id="fixedPrice"
+                name="fixedPrice"
+                type="number"
+                step="0.01"
+                min="0"
+                defaultValue={initial?.fixedPrice ?? ""}
+              />
+            </Field>
+          ) : null}
           <Field label={t("fields.startDate")} htmlFor="startDate">
             <Input
               id="startDate"

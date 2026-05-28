@@ -56,6 +56,8 @@ function clientRow(input: ClientInput) {
     city: input.city,
     country: input.country,
     notes: input.notes,
+    default_hourly_rate: input.defaultHourlyRate,
+    default_currency: input.defaultCurrency,
     kyc_status: input.kycStatus,
     risk_level: input.riskLevel,
     kyc_review_due: input.kycReviewDue,

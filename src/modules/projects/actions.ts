@@ -38,6 +38,8 @@ function projectRow(input: ProjectInput) {
     status: input.status,
     hourly_rate: input.hourlyRate,
     currency: input.currency,
+    billing_type: input.billingType,
+    fixed_price: input.fixedPrice,
     start_date: input.startDate,
     end_date: input.endDate,
   };

@@ -54,7 +54,9 @@
       "postalCode": "Postnummer",
       "city": "Ort",
       "country": "Land",
-      "notes": "Anteckningar"
+      "notes": "Anteckningar",
+      "defaultHourlyRate": "Grundtimpris",
+      "currency": "Valuta"
     },
     "type": {
       "individual": "Privatperson",
@@ -66,7 +68,8 @@
       "kyc": "KYC",
       "beneficialOwners": "Verkliga huvudmän",
       "aml": "AML-screening",
-      "documents": "Dokument"
+      "documents": "Dokument",
+      "billing": "Fakturering"
     },
     "kyc": {
       "status": "KYC-status",
@@ -149,7 +152,9 @@
       "hourlyRate": "Timpris",
       "currency": "Valuta",
       "startDate": "Startdatum",
-      "endDate": "Slutdatum"
+      "endDate": "Slutdatum",
+      "billingType": "Fakturering",
+      "fixedPrice": "Fast pris"
     },
     "status": {
       "active": "Aktivt",
@@ -157,9 +162,14 @@
       "completed": "Avslutat",
       "archived": "Arkiverat"
     },
+    "billing": {
+      "hourly": "Löpande",
+      "fixed": "Fast pris"
+    },
     "sections": {
       "details": "Uppgifter",
-      "documents": "Dokument"
+      "documents": "Dokument",
+      "time": "Tid & fakturering"
     },
     "errors": {
       "forbidden": "Du har inte behörighet att göra detta.",
@@ -169,7 +179,33 @@
   },
   "time": {
     "title": "Tidrapportering",
-    "empty": "Inga tidsposter ännu. Den här modulen kommer snart."
+    "empty": "Inga tidsposter ännu.",
+    "new": "Registrera tid",
+    "createTitle": "Registrera tid",
+    "editTitle": "Redigera tidspost",
+    "backToList": "Tillbaka till tidrapportering",
+    "deleteConfirm": "Radera denna tidspost? Detta kan inte ångras.",
+    "noProjects": "Skapa ett projekt först — tid registreras på ett projekt.",
+    "count": "{count, plural, =0 {Inga poster} one {# post} other {# poster}}",
+    "fields": {
+      "project": "Projekt",
+      "date": "Datum",
+      "hours": "Timmar",
+      "description": "Beskrivning av uppgift",
+      "amount": "Belopp",
+      "billable": "Fakturerbar",
+      "user": "Användare"
+    },
+    "summary": {
+      "loggedHours": "Registrerade timmar",
+      "billable": "Fakturerbart totalt",
+      "fixedPrice": "Fast pris"
+    },
+    "errors": {
+      "forbidden": "Du har inte behörighet att göra detta.",
+      "generic": "Något gick fel. Försök igen.",
+      "validation": "Kontrollera formuläret och försök igen."
+    }
   },
   "common": {
     "language": "Språk",

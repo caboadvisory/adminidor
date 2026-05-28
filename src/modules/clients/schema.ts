@@ -34,6 +34,11 @@ const checkbox = z.preprocess(
   z.boolean(),
 );
 
+const nullableNumber = z.preprocess(
+  (v) => (v === "" || v == null ? null : Number(v)),
+  z.number().min(0).nullable(),
+);
+
 export const clientInputSchema = z.object({
   clientType: clientTypeEnum,
   name: z.string().trim().min(1).max(200),
@@ -51,6 +56,11 @@ export const clientInputSchema = z.object({
   city: nullableText(100),
   country: nullableText(100),
   notes: nullableText(2000),
+  defaultHourlyRate: nullableNumber,
+  defaultCurrency: z.preprocess(
+    (v) => (v === "" || v == null ? "SEK" : v),
+    z.string().trim().min(1).max(10),
+  ),
   kycStatus: kycStatusEnum,
   riskLevel: z.preprocess(emptyToNull, riskLevelEnum.nullable()),
   kycReviewDue: nullableDate,

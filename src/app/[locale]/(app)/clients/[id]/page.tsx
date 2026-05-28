@@ -54,6 +54,11 @@ export default async function ClientDetailPage({ params }: Props) {
           [t("fields.nationalId"), client.nationalId],
         ];
 
+  const baseRate =
+    client.defaultHourlyRate != null
+      ? `${client.defaultHourlyRate} ${client.defaultCurrency}`
+      : null;
+
   const contactRows: Array<[string, string | null]> = [
     [t("fields.contactEmail"), client.contactEmail],
     [t("fields.contactPhone"), client.contactPhone],
@@ -106,6 +111,7 @@ export default async function ClientDetailPage({ params }: Props) {
           {detailRows.map(([label, value]) => (
             <Row key={label} label={label} value={value} />
           ))}
+          <Row label={t("fields.defaultHourlyRate")} value={baseRate} />
         </dl>
       </Card>
 

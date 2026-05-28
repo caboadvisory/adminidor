@@ -8,7 +8,7 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 | ------ | ------ | ----- |
 | **Clients** | Built | Individuals & legal entities, KYC, beneficial owners (UBO), AML screening, and document storage |
 | **Projects** | Built | Linked to a client; status, hourly rate, currency, dates, and R2 document storage |
-| **Time reporting** | Scaffolded | Types + queries + placeholder page; full CRUD pending |
+| **Time reporting** | Built | Entries linked to a project + user: date, duration, task, billable flag, and an auto-calculated (editable) price |
 
 ### Clients — KYC / AML
 
@@ -20,9 +20,17 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 
 ### Projects
 
-- Each project belongs to a **client**. Fields: name, code, status (`active`, `on_hold`, `completed`, `archived`), hourly rate + currency, and start / end dates.
+- Each project belongs to a **client**. Fields: name, code, status (`active`, `on_hold`, `completed`, `archived`), and start / end dates.
+- **Billing:** hourly (with a project hourly rate + currency) or **fixed price**. A fixed-price project bills its fixed amount; per-entry amounts are still recorded but excluded from the billable total.
 - **Documents:** engagement letters and other files stored in Cloudflare R2 (the same shared upload flow as Clients).
 - Admin-write; all staff can read.
+
+### Time reporting
+
+- Entries are linked to a **project** and a **user**, and capture: **date**, **duration** (hours logged, not start/stop), **task description**, a **billable** flag, and a **price**.
+- The **price** auto-calculates from the effective hourly rate × duration and is editable per entry. The **effective rate** is the project's hourly rate, falling back to the client's base hourly rate.
+- A project's **fixed price overrides** per-entry pricing in the billable total.
+- Each user manages their own entries at `/time`; admins can read all. A project's detail page shows its entries and a billing summary (logged hours + billable total, or the fixed price).
 
 ## Tech stack
 
@@ -47,6 +55,7 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
    (or `supabase db push`):
    - `supabase/migrations/0001_init.sql`
    - `supabase/migrations/0002_clients_kyc_aml.sql`
+   - `supabase/migrations/0003_billing_rates.sql`
 4. Configure the **R2 bucket CORS** policy so the browser can upload (see [File storage](#file-storage-cloudflare-r2)).
 5. Create an admin user (see [Authentication & roles](#authentication--roles)).
 6. Run the dev server:
@@ -94,11 +103,11 @@ where id = (select id from auth.users where email = 'you@example.com');
 Postgres tables (all with Row Level Security enabled):
 
 - `profiles` — 1:1 with `auth.users`; role (`admin`/`member`), preferred locale.
-- `clients` — type (individual/entity), contact + address, KYC status/risk/review dates, and identifying fields (incl. sensitive `national_id`).
+- `clients` — type (individual/entity), contact + address, KYC status/risk/review dates, a base hourly rate, and identifying fields (incl. sensitive `national_id`).
 - `beneficial_owners` — UBO records linked to a client.
 - `aml_screenings` — AML screening log linked to a client.
-- `projects` — linked to a client (status, rate, dates).
-- `time_entries` — linked to a project and a user.
+- `projects` — linked to a client; status, hourly rate or fixed price (billing type), currency, dates.
+- `time_entries` — linked to a project and a user; date, minutes, description, billable, and amount (auto-calculated, editable) + the unit rate applied.
 - `documents` — R2 object metadata (owner type/id, key, filename, size).
 
 **RLS summary:** authenticated staff can read all firm data; clients and KYC/AML records are admin-write; users manage their own time entries and document uploads. Admin checks use a `public.is_admin()` `SECURITY DEFINER` function to avoid policy recursion. Schema changes live in `supabase/migrations/` and must be applied in order.
@@ -194,9 +203,9 @@ supabase/migrations/           # 0001_init.sql, 0002_clients_kyc_aml.sql
 
 - ✅ **Foundation** — localized, auth-guarded app shell; Supabase auth with a single-firm, role-based RLS model; Cloudflare R2 storage; i18n (en/sv/es).
 - ✅ **Clients** — full CRUD with KYC, beneficial owners (UBO), AML screening, and documents.
-- ✅ **Projects** — full CRUD linked to clients, with documents.
-- ⬜ **Time reporting** — the `time_entries` table and RLS exist; module UI and actions are pending.
-- ⬜ **Future** — dashboard metrics, AML screening-provider integration, project ↔ time reporting, and deployment.
+- ✅ **Projects** — full CRUD linked to clients, with hourly/fixed billing and documents.
+- ✅ **Time reporting** — log time against a project (date, duration, task, billable, auto-calculated price); per-project billing summary with fixed-price support.
+- ⬜ **Future** — invoicing / exports, dashboard metrics, AML screening-provider integration, and deployment.
 
 ## Learn more
 

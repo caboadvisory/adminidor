@@ -32,6 +32,9 @@ export type Client = {
   city: string | null;
   country: string | null;
   notes: string | null;
+  // billing
+  defaultHourlyRate: number | null;
+  defaultCurrency: string;
   // KYC
   kycStatus: KycStatus;
   riskLevel: RiskLevel | null;
