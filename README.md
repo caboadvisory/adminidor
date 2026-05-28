@@ -56,6 +56,7 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
    - `supabase/migrations/0001_init.sql`
    - `supabase/migrations/0002_clients_kyc_aml.sql`
    - `supabase/migrations/0003_billing_rates.sql`
+   - `supabase/migrations/0004_default_currency_eur.sql`
 4. Configure the **R2 bucket CORS** policy so the browser can upload (see [File storage](#file-storage-cloudflare-r2)).
 5. Create an admin user (see [Authentication & roles](#authentication--roles)).
 6. Run the dev server:

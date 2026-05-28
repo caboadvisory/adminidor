@@ -11,7 +11,7 @@ import { createProject, updateProject } from "@/modules/projects/actions";
 import type { Project, ProjectBillingType } from "@/modules/projects/types";
 
 const STATUSES = ["active", "on_hold", "completed", "archived"] as const;
-const CURRENCIES = ["SEK", "EUR", "USD", "GBP", "NOK", "DKK"];
+const CURRENCIES = ["EUR", "SEK", "USD", "GBP", "NOK", "DKK"];
 
 function Field({
   label,
@@ -49,7 +49,7 @@ export function ProjectForm({ mode, projectId, initial, clients }: Props) {
     initial?.billingType ?? "hourly",
   );
 
-  const currentCurrency = initial?.currency ?? "SEK";
+  const currentCurrency = initial?.currency ?? "EUR";
   const currencyOptions = CURRENCIES.includes(currentCurrency)
     ? CURRENCIES
     : [currentCurrency, ...CURRENCIES];

@@ -58,7 +58,7 @@ export const clientInputSchema = z.object({
   notes: nullableText(2000),
   defaultHourlyRate: nullableNumber,
   defaultCurrency: z.preprocess(
-    (v) => (v === "" || v == null ? "SEK" : v),
+    (v) => (v === "" || v == null ? "EUR" : v),
     z.string().trim().min(1).max(10),
   ),
   kycStatus: kycStatusEnum,

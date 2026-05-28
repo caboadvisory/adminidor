@@ -34,7 +34,7 @@ export const projectInputSchema = z.object({
   status: projectStatusEnum,
   hourlyRate: nullableNumber,
   currency: z.preprocess(
-    (v) => (v === "" || v == null ? "SEK" : v),
+    (v) => (v === "" || v == null ? "EUR" : v),
     z.string().trim().min(1).max(10),
   ),
   billingType: projectBillingTypeEnum,

@@ -19,7 +19,7 @@ const KYC_STATUSES = [
   "expired",
 ] as const;
 const RISK_LEVELS = ["low", "medium", "high"] as const;
-const CURRENCIES = ["SEK", "EUR", "USD", "GBP", "NOK", "DKK"];
+const CURRENCIES = ["EUR", "SEK", "USD", "GBP", "NOK", "DKK"];
 
 function Field({
   label,
@@ -57,7 +57,7 @@ export function ClientForm({ mode, clientId, initial }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const currentCurrency = initial?.defaultCurrency ?? "SEK";
+  const currentCurrency = initial?.defaultCurrency ?? "EUR";
   const currencyOptions = CURRENCIES.includes(currentCurrency)
     ? CURRENCIES
     : [currentCurrency, ...CURRENCIES];
