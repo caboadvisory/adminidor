@@ -22,6 +22,8 @@ export type Project = {
 export type ProjectPickerOption = {
   id: string;
   name: string;
+  clientId: string;
+  clientName: string | null;
   currency: string;
   effectiveRate: number | null;
   billingType: ProjectBillingType;

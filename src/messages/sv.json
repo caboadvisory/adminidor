@@ -188,6 +188,7 @@
     "noProjects": "Skapa ett projekt först — tid registreras på ett projekt.",
     "count": "{count, plural, =0 {Inga poster} one {# post} other {# poster}}",
     "fields": {
+      "client": "Klient",
       "project": "Projekt",
       "date": "Datum",
       "hours": "Timmar",

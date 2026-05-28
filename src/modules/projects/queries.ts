@@ -32,7 +32,7 @@ export async function listProjectsForPicker(): Promise<ProjectPickerOption[]> {
   const { data, error } = await supabase
     .from("projects")
     .select(
-      "id, name, currency, hourly_rate, billing_type, clients(default_hourly_rate)",
+      "id, name, currency, hourly_rate, billing_type, client_id, clients(name, default_hourly_rate)",
     )
     .order("name");
 
@@ -47,6 +47,8 @@ export async function listProjectsForPicker(): Promise<ProjectPickerOption[]> {
     return {
       id: row.id,
       name: row.name,
+      clientId: row.client_id,
+      clientName: row.clients?.name ?? null,
       currency: row.currency,
       effectiveRate: projectRate ?? clientRate,
       billingType: row.billing_type,

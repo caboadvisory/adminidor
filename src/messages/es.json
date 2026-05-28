@@ -188,6 +188,7 @@
     "noProjects": "Crea un proyecto primero — las horas se registran en un proyecto.",
     "count": "{count, plural, =0 {Sin registros} one {# registro} other {# registros}}",
     "fields": {
+      "client": "Cliente",
       "project": "Proyecto",
       "date": "Fecha",
       "hours": "Horas",

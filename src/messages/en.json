@@ -188,6 +188,7 @@
     "noProjects": "Create a project first — time is logged against a project.",
     "count": "{count, plural, =0 {No entries} one {# entry} other {# entries}}",
     "fields": {
+      "client": "Client",
       "project": "Project",
       "date": "Date",
       "hours": "Hours",

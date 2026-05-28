@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -54,8 +54,27 @@ export function TimeEntryForm({ mode, entryId, initial, projects }: Props) {
 
   const today = new Date().toISOString().slice(0, 10);
 
+  // Unique clients derived from the available projects.
+  const clients = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const p of projects) {
+      if (p.clientId) map.set(p.clientId, p.clientName ?? p.clientId);
+    }
+    return Array.from(map, ([id, name]) => ({ id, name })).sort((a, b) =>
+      a.name.localeCompare(b.name),
+    );
+  }, [projects]);
+
+  const initialProject = initial
+    ? (projects.find((p) => p.id === initial.projectId) ?? null)
+    : null;
+  const initialClientId = initialProject?.clientId ?? clients[0]?.id ?? "";
+
+  const [clientId, setClientId] = useState(initialClientId);
   const [projectId, setProjectId] = useState(
-    initial?.projectId ?? projects[0]?.id ?? "",
+    initial?.projectId ??
+      projects.find((p) => p.clientId === initialClientId)?.id ??
+      "",
   );
   const [hours, setHours] = useState(
     initial ? String(minutesToHours(initial.minutes)) : "",
@@ -65,7 +84,15 @@ export function TimeEntryForm({ mode, entryId, initial, projects }: Props) {
   );
   const [amountEdited, setAmountEdited] = useState(mode === "edit");
 
+  const clientProjects = projects.filter((p) => p.clientId === clientId);
   const selected = projects.find((p) => p.id === projectId) ?? null;
+
+  function onClientChange(value: string) {
+    setClientId(value);
+    const firstProject = projects.find((p) => p.clientId === value) ?? null;
+    setProjectId(firstProject?.id ?? "");
+    if (!amountEdited) setAmount(computeAmount(firstProject, hours));
+  }
 
   function onProjectChange(value: string) {
     setProjectId(value);
@@ -119,6 +146,22 @@ export function TimeEntryForm({ mode, entryId, initial, projects }: Props) {
     <form onSubmit={onSubmit} className="space-y-6">
       <Card className="space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
+          <Field label={t("fields.client")} htmlFor="clientId">
+            <Select
+              id="clientId"
+              value={clientId}
+              onChange={(e) => onClientChange(e.target.value)}
+            >
+              <option value="" disabled>
+                —
+              </option>
+              {clients.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </Select>
+          </Field>
           <Field label={t("fields.project")} htmlFor="projectId">
             <Select
               id="projectId"
@@ -130,7 +173,7 @@ export function TimeEntryForm({ mode, entryId, initial, projects }: Props) {
               <option value="" disabled>
                 —
               </option>
-              {projects.map((p) => (
+              {clientProjects.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.name}
                 </option>
