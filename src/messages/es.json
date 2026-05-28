@@ -7,7 +7,8 @@
     "dashboard": "Panel",
     "clients": "Clientes",
     "projects": "Proyectos",
-    "time": "Registro de horas"
+    "time": "Registro de horas",
+    "reports": "Informes"
   },
   "auth": {
     "signIn": "Iniciar sesión",
@@ -206,6 +207,30 @@
       "forbidden": "No tienes permiso para hacer esto.",
       "generic": "Algo salió mal. Inténtalo de nuevo.",
       "validation": "Revisa el formulario e inténtalo de nuevo."
+    }
+  },
+  "reports": {
+    "title": "Informes",
+    "subtitle": "Genera informes sobre los datos de tu firma.",
+    "backToReports": "Volver a informes",
+    "timesheet": {
+      "title": "Hoja de horas",
+      "description": "Tiempo registrado y coste de un cliente en un periodo, agrupado por proyecto.",
+      "generate": "Generar",
+      "selectPrompt": "Selecciona un cliente y un periodo y genera el informe.",
+      "empty": "No hay registros de horas para este cliente en el periodo seleccionado.",
+      "client": "Cliente",
+      "from": "Desde",
+      "to": "Hasta",
+      "project": "Proyecto",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "columns": {
+        "date": "Fecha",
+        "hours": "Horas",
+        "description": "Descripción",
+        "cost": "Coste"
+      }
     }
   },
   "common": {

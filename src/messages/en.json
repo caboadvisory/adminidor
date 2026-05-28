@@ -7,7 +7,8 @@
     "dashboard": "Dashboard",
     "clients": "Clients",
     "projects": "Projects",
-    "time": "Time reporting"
+    "time": "Time reporting",
+    "reports": "Reports"
   },
   "auth": {
     "signIn": "Sign in",
@@ -206,6 +207,30 @@
       "forbidden": "You don't have permission to do this.",
       "generic": "Something went wrong. Please try again.",
       "validation": "Please check the form and try again."
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Generate reports across your firm's data.",
+    "backToReports": "Back to reports",
+    "timesheet": {
+      "title": "Time sheet",
+      "description": "Logged time and cost for a client over a period, grouped by project.",
+      "generate": "Generate",
+      "selectPrompt": "Select a client and period, then generate the report.",
+      "empty": "No time entries for this client in the selected period.",
+      "client": "Client",
+      "from": "From",
+      "to": "To",
+      "project": "Project",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "columns": {
+        "date": "Date",
+        "hours": "Hours",
+        "description": "Description",
+        "cost": "Cost"
+      }
     }
   },
   "common": {

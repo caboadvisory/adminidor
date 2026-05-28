@@ -9,6 +9,7 @@ const items = [
   { href: "/clients", key: "clients" },
   { href: "/projects", key: "projects" },
   { href: "/time", key: "time" },
+  { href: "/reports", key: "reports" },
 ] as const;
 
 export function Sidebar() {

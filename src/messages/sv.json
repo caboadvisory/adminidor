@@ -7,7 +7,8 @@
     "dashboard": "Översikt",
     "clients": "Klienter",
     "projects": "Projekt",
-    "time": "Tidrapportering"
+    "time": "Tidrapportering",
+    "reports": "Rapporter"
   },
   "auth": {
     "signIn": "Logga in",
@@ -206,6 +207,30 @@
       "forbidden": "Du har inte behörighet att göra detta.",
       "generic": "Något gick fel. Försök igen.",
       "validation": "Kontrollera formuläret och försök igen."
+    }
+  },
+  "reports": {
+    "title": "Rapporter",
+    "subtitle": "Generera rapporter över byråns data.",
+    "backToReports": "Tillbaka till rapporter",
+    "timesheet": {
+      "title": "Tidrapport",
+      "description": "Registrerad tid och kostnad för en klient under en period, grupperad per projekt.",
+      "generate": "Generera",
+      "selectPrompt": "Välj en klient och period och generera sedan rapporten.",
+      "empty": "Inga tidsposter för denna klient under vald period.",
+      "client": "Klient",
+      "from": "Från",
+      "to": "Till",
+      "project": "Projekt",
+      "subtotal": "Delsumma",
+      "total": "Totalt",
+      "columns": {
+        "date": "Datum",
+        "hours": "Timmar",
+        "description": "Beskrivning",
+        "cost": "Kostnad"
+      }
     }
   },
   "common": {

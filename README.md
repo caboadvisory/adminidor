@@ -9,6 +9,7 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 | **Clients** | Built | Individuals & legal entities, KYC, beneficial owners (UBO), AML screening, and document storage |
 | **Projects** | Built | Linked to a client; status, hourly rate, currency, dates, and R2 document storage |
 | **Time reporting** | Built | Entries linked to a project + user: date, duration, task, billable flag, and an auto-calculated (editable) price |
+| **Reports** | Built | Time sheet: logged time + cost for a client over a period, grouped by project |
 
 ### Clients — KYC / AML
 
@@ -31,6 +32,10 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 - The **price** auto-calculates from the effective hourly rate × duration and is editable per entry. The **effective rate** is the project's hourly rate, falling back to the client's base hourly rate.
 - A project's **fixed price overrides** per-entry pricing in the billable total.
 - Each user manages their own entries at `/time`; admins can read all. A project's detail page shows its entries and a billing summary (logged hours + billable total, or the fixed price).
+
+### Reports
+
+- A reports hub (`/reports`). The first report — **Time sheet** (`/reports/timesheet`) — takes a **client** and a **date range** and lists all logged time for that client in the period (date, hours, description, cost), **grouped by project** with per-project subtotals and an overall total (per currency). The filter is encoded in the URL, so a report view is shareable. Read-only for all staff.
 
 ## Tech stack
 
@@ -206,6 +211,7 @@ supabase/migrations/           # 0001_init.sql, 0002_clients_kyc_aml.sql
 - ✅ **Clients** — full CRUD with KYC, beneficial owners (UBO), AML screening, and documents.
 - ✅ **Projects** — full CRUD linked to clients, with hourly/fixed billing and documents.
 - ✅ **Time reporting** — log time against a project (date, duration, task, billable, auto-calculated price); per-project billing summary with fixed-price support.
+- ✅ **Reports** — time sheet (client + period, grouped by project with subtotals and totals).
 - ⬜ **Future** — invoicing / exports, dashboard metrics, AML screening-provider integration, and deployment.
 
 ## Learn more
