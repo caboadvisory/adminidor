@@ -28,7 +28,107 @@
   },
   "clients": {
     "title": "Klienter",
-    "empty": "Inga klienter ännu. Den här modulen kommer snart."
+    "empty": "Inga klienter ännu.",
+    "new": "Ny klient",
+    "createTitle": "Ny klient",
+    "editTitle": "Redigera klient",
+    "backToList": "Tillbaka till klienter",
+    "deleteConfirm": "Radera denna klient och alla relaterade KYC/AML-uppgifter? Detta kan inte ångras.",
+    "count": "{count, plural, =0 {Inga klienter} one {# klient} other {# klienter}}",
+    "createdAt": "Tillagd",
+    "fields": {
+      "clientType": "Klienttyp",
+      "name": "Namn",
+      "nameEntity": "Juridiskt namn",
+      "nameIndividual": "Fullständigt namn",
+      "registrationNumber": "Organisationsnummer",
+      "jurisdiction": "Jurisdiktion",
+      "legalForm": "Bolagsform",
+      "dateOfBirth": "Födelsedatum",
+      "nationality": "Nationalitet",
+      "nationalId": "Person-/skattenummer",
+      "contactEmail": "E-post",
+      "contactPhone": "Telefon",
+      "addressLine1": "Adressrad 1",
+      "addressLine2": "Adressrad 2",
+      "postalCode": "Postnummer",
+      "city": "Ort",
+      "country": "Land",
+      "notes": "Anteckningar"
+    },
+    "type": {
+      "individual": "Privatperson",
+      "entity": "Juridisk person"
+    },
+    "sections": {
+      "details": "Uppgifter",
+      "contact": "Kontakt",
+      "kyc": "KYC",
+      "beneficialOwners": "Verkliga huvudmän",
+      "aml": "AML-screening",
+      "documents": "Dokument"
+    },
+    "kyc": {
+      "status": "KYC-status",
+      "riskLevel": "Risknivå",
+      "reviewDue": "Omprövning senast",
+      "verifiedAt": "Verifierad",
+      "notVerified": "Ej verifierad"
+    },
+    "kycStatus": {
+      "not_started": "Ej påbörjad",
+      "in_progress": "Pågår",
+      "verified": "Verifierad",
+      "rejected": "Avvisad",
+      "expired": "Utgången"
+    },
+    "risk": {
+      "none": "Ej bedömd",
+      "low": "Låg",
+      "medium": "Medel",
+      "high": "Hög"
+    },
+    "ubo": {
+      "add": "Lägg till verklig huvudman",
+      "fullName": "Fullständigt namn",
+      "ownership": "Ägarandel %",
+      "isPep": "Person i politiskt utsatt ställning (PEP)",
+      "pep": "PEP",
+      "empty": "Inga verkliga huvudmän registrerade.",
+      "onlyEntities": "Verkliga huvudmän gäller juridiska personer."
+    },
+    "aml": {
+      "add": "Lägg till screening",
+      "type": "Typ",
+      "result": "Resultat",
+      "provider": "Leverantör",
+      "reference": "Referens",
+      "screenedAt": "Screenad",
+      "notes": "Anteckningar",
+      "empty": "Inga screeningar registrerade."
+    },
+    "amlType": {
+      "pep": "PEP",
+      "sanctions": "Sanktioner",
+      "adverse_media": "Negativ mediebevakning"
+    },
+    "amlResult": {
+      "clear": "Ingen träff",
+      "hit": "Träff",
+      "pending": "Pågående"
+    },
+    "documents": {
+      "upload": "Ladda upp dokument",
+      "uploading": "Laddar upp…",
+      "download": "Ladda ner",
+      "empty": "Inga dokument uppladdade.",
+      "notConfigured": "Fillagring är inte konfigurerad."
+    },
+    "errors": {
+      "forbidden": "Du har inte behörighet att göra detta.",
+      "generic": "Något gick fel. Försök igen.",
+      "validation": "Kontrollera formuläret och försök igen."
+    }
   },
   "projects": {
     "title": "Projekt",
@@ -40,6 +140,18 @@
   },
   "common": {
     "language": "Språk",
-    "comingSoon": "Kommer snart"
+    "comingSoon": "Kommer snart",
+    "save": "Spara",
+    "saving": "Sparar…",
+    "cancel": "Avbryt",
+    "delete": "Radera",
+    "deleting": "Raderar…",
+    "edit": "Redigera",
+    "add": "Lägg till",
+    "adding": "Lägger till…",
+    "back": "Tillbaka",
+    "loading": "Laddar…",
+    "none": "—",
+    "optional": "valfritt"
   }
 }

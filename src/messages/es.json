@@ -28,7 +28,107 @@
   },
   "clients": {
     "title": "Clientes",
-    "empty": "Aún no hay clientes. Este módulo estará disponible pronto."
+    "empty": "Aún no hay clientes.",
+    "new": "Nuevo cliente",
+    "createTitle": "Nuevo cliente",
+    "editTitle": "Editar cliente",
+    "backToList": "Volver a clientes",
+    "deleteConfirm": "¿Eliminar este cliente y todos los datos de KYC/AML relacionados? Esto no se puede deshacer.",
+    "count": "{count, plural, =0 {Sin clientes} one {# cliente} other {# clientes}}",
+    "createdAt": "Añadido",
+    "fields": {
+      "clientType": "Tipo de cliente",
+      "name": "Nombre",
+      "nameEntity": "Razón social",
+      "nameIndividual": "Nombre completo",
+      "registrationNumber": "Número de registro",
+      "jurisdiction": "Jurisdicción",
+      "legalForm": "Forma jurídica",
+      "dateOfBirth": "Fecha de nacimiento",
+      "nationality": "Nacionalidad",
+      "nationalId": "ID nacional / NIF",
+      "contactEmail": "Correo electrónico",
+      "contactPhone": "Teléfono",
+      "addressLine1": "Dirección línea 1",
+      "addressLine2": "Dirección línea 2",
+      "postalCode": "Código postal",
+      "city": "Ciudad",
+      "country": "País",
+      "notes": "Notas"
+    },
+    "type": {
+      "individual": "Persona física",
+      "entity": "Persona jurídica"
+    },
+    "sections": {
+      "details": "Datos",
+      "contact": "Contacto",
+      "kyc": "KYC",
+      "beneficialOwners": "Titulares reales",
+      "aml": "Cribado AML",
+      "documents": "Documentos"
+    },
+    "kyc": {
+      "status": "Estado KYC",
+      "riskLevel": "Nivel de riesgo",
+      "reviewDue": "Revisión antes de",
+      "verifiedAt": "Verificado",
+      "notVerified": "No verificado"
+    },
+    "kycStatus": {
+      "not_started": "No iniciado",
+      "in_progress": "En curso",
+      "verified": "Verificado",
+      "rejected": "Rechazado",
+      "expired": "Caducado"
+    },
+    "risk": {
+      "none": "Sin evaluar",
+      "low": "Bajo",
+      "medium": "Medio",
+      "high": "Alto"
+    },
+    "ubo": {
+      "add": "Añadir titular real",
+      "fullName": "Nombre completo",
+      "ownership": "Participación %",
+      "isPep": "Persona expuesta políticamente (PEP)",
+      "pep": "PEP",
+      "empty": "No hay titulares reales registrados.",
+      "onlyEntities": "Los titulares reales aplican a personas jurídicas."
+    },
+    "aml": {
+      "add": "Añadir cribado",
+      "type": "Tipo",
+      "result": "Resultado",
+      "provider": "Proveedor",
+      "reference": "Referencia",
+      "screenedAt": "Cribado",
+      "notes": "Notas",
+      "empty": "No hay cribados registrados."
+    },
+    "amlType": {
+      "pep": "PEP",
+      "sanctions": "Sanciones",
+      "adverse_media": "Prensa adversa"
+    },
+    "amlResult": {
+      "clear": "Sin coincidencias",
+      "hit": "Coincidencia",
+      "pending": "Pendiente"
+    },
+    "documents": {
+      "upload": "Subir documento",
+      "uploading": "Subiendo…",
+      "download": "Descargar",
+      "empty": "No hay documentos subidos.",
+      "notConfigured": "El almacenamiento de archivos no está configurado."
+    },
+    "errors": {
+      "forbidden": "No tienes permiso para hacer esto.",
+      "generic": "Algo salió mal. Inténtalo de nuevo.",
+      "validation": "Revisa el formulario e inténtalo de nuevo."
+    }
   },
   "projects": {
     "title": "Proyectos",
@@ -40,6 +140,18 @@
   },
   "common": {
     "language": "Idioma",
-    "comingSoon": "Próximamente"
+    "comingSoon": "Próximamente",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "deleting": "Eliminando…",
+    "edit": "Editar",
+    "add": "Añadir",
+    "adding": "Añadiendo…",
+    "back": "Volver",
+    "loading": "Cargando…",
+    "none": "—",
+    "optional": "opcional"
   }
 }

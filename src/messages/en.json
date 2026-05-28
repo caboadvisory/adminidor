@@ -28,7 +28,107 @@
   },
   "clients": {
     "title": "Clients",
-    "empty": "No clients yet. This module is coming soon."
+    "empty": "No clients yet.",
+    "new": "New client",
+    "createTitle": "New client",
+    "editTitle": "Edit client",
+    "backToList": "Back to clients",
+    "deleteConfirm": "Delete this client and all related KYC/AML data? This cannot be undone.",
+    "count": "{count, plural, =0 {No clients} one {# client} other {# clients}}",
+    "createdAt": "Added",
+    "fields": {
+      "clientType": "Client type",
+      "name": "Name",
+      "nameEntity": "Legal name",
+      "nameIndividual": "Full name",
+      "registrationNumber": "Registration number",
+      "jurisdiction": "Jurisdiction",
+      "legalForm": "Legal form",
+      "dateOfBirth": "Date of birth",
+      "nationality": "Nationality",
+      "nationalId": "National ID / tax no.",
+      "contactEmail": "Email",
+      "contactPhone": "Phone",
+      "addressLine1": "Address line 1",
+      "addressLine2": "Address line 2",
+      "postalCode": "Postal code",
+      "city": "City",
+      "country": "Country",
+      "notes": "Notes"
+    },
+    "type": {
+      "individual": "Individual",
+      "entity": "Legal entity"
+    },
+    "sections": {
+      "details": "Details",
+      "contact": "Contact",
+      "kyc": "KYC",
+      "beneficialOwners": "Beneficial owners",
+      "aml": "AML screening",
+      "documents": "Documents"
+    },
+    "kyc": {
+      "status": "KYC status",
+      "riskLevel": "Risk level",
+      "reviewDue": "Review due",
+      "verifiedAt": "Verified",
+      "notVerified": "Not verified"
+    },
+    "kycStatus": {
+      "not_started": "Not started",
+      "in_progress": "In progress",
+      "verified": "Verified",
+      "rejected": "Rejected",
+      "expired": "Expired"
+    },
+    "risk": {
+      "none": "Unrated",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "ubo": {
+      "add": "Add beneficial owner",
+      "fullName": "Full name",
+      "ownership": "Ownership %",
+      "isPep": "Politically exposed (PEP)",
+      "pep": "PEP",
+      "empty": "No beneficial owners recorded.",
+      "onlyEntities": "Beneficial owners apply to legal entities."
+    },
+    "aml": {
+      "add": "Add screening",
+      "type": "Type",
+      "result": "Result",
+      "provider": "Provider",
+      "reference": "Reference",
+      "screenedAt": "Screened",
+      "notes": "Notes",
+      "empty": "No screenings recorded."
+    },
+    "amlType": {
+      "pep": "PEP",
+      "sanctions": "Sanctions",
+      "adverse_media": "Adverse media"
+    },
+    "amlResult": {
+      "clear": "Clear",
+      "hit": "Hit",
+      "pending": "Pending"
+    },
+    "documents": {
+      "upload": "Upload document",
+      "uploading": "Uploading…",
+      "download": "Download",
+      "empty": "No documents uploaded.",
+      "notConfigured": "File storage is not configured."
+    },
+    "errors": {
+      "forbidden": "You don't have permission to do this.",
+      "generic": "Something went wrong. Please try again.",
+      "validation": "Please check the form and try again."
+    }
   },
   "projects": {
     "title": "Projects",
@@ -40,6 +140,18 @@
   },
   "common": {
     "language": "Language",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting…",
+    "edit": "Edit",
+    "add": "Add",
+    "adding": "Adding…",
+    "back": "Back",
+    "loading": "Loading…",
+    "none": "—",
+    "optional": "optional"
   }
 }

@@ -2,7 +2,7 @@
 
 A modular administrative web app for a small consultancy / law firm. Modern, clean UI with multilingual support (English, Swedish, Spanish) from the outset.
 
-First three modules: **Clients**, **Projects**, **Time reporting**.
+First three modules: **Clients** (built — with KYC/AML, beneficial owners, and R2 document uploads), **Projects**, and **Time reporting** (scaffolded).
 
 ## Tech stack
 
@@ -23,8 +23,9 @@ First three modules: **Clients**, **Projects**, **Time reporting**.
    cp .env.example .env.local
    ```
    See [Environment](#environment) below.
-3. Apply the database schema to your Supabase project: run `supabase/migrations/0001_init.sql`
-   (via the Supabase SQL editor, or `supabase db push` with the Supabase CLI).
+3. Apply the database migrations to your Supabase project **in order** — `supabase/migrations/0001_init.sql`
+   then `0002_clients_kyc_aml.sql` (via the Supabase SQL editor, or `supabase db push` with the Supabase CLI).
+   Note: browser document uploads require the R2 bucket's CORS to allow `PUT` from your app origin.
 4. Run the dev server:
    ```bash
    npm run dev
