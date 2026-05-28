@@ -21,21 +21,6 @@ begin
 end;
 $$;
 
--- SECURITY DEFINER so it can read profiles without tripping RLS (avoids
--- recursion when referenced from RLS policies).
-create or replace function public.is_admin()
-returns boolean
-language sql
-security definer
-set search_path = public
-stable
-as $$
-  select exists (
-    select 1 from public.profiles
-    where id = auth.uid() and role = 'admin'
-  );
-$$;
-
 -- ---------------------------------------------------------------------------
 -- profiles (1:1 with auth.users)
 -- ---------------------------------------------------------------------------
@@ -51,6 +36,21 @@ create table public.profiles (
 create trigger profiles_set_updated_at
   before update on public.profiles
   for each row execute function public.set_updated_at();
+
+-- SECURITY DEFINER so it can read profiles without tripping RLS (avoids
+-- recursion when referenced from RLS policies). Defined after profiles exists.
+create or replace function public.is_admin()
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select exists (
+    select 1 from public.profiles
+    where id = auth.uid() and role = 'admin'
+  );
+$$;
 
 -- Auto-create a profile whenever an auth user is created.
 create or replace function public.handle_new_user()
