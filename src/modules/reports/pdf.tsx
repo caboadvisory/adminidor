@@ -34,74 +34,83 @@ export type TimesheetPdfMeta = {
   labels: TimesheetPdfLabels;
 };
 
+// Mirrors the on-screen report: cream page, each section a white rounded card.
 const styles = StyleSheet.create({
   page: {
-    padding: 32,
+    padding: 24,
     fontSize: 9,
     fontFamily: "Helvetica",
-    color: "#171717",
+    color: "#2b3a44",
+    backgroundColor: "#f5f3ed", // brand cream canvas
+  },
+  card: {
+    backgroundColor: "#ffffff",
+    border: "1 solid #e4ded1",
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 12,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: 16,
-    paddingBottom: 12,
-    borderBottom: "1 solid #e5e5e5",
   },
-  logo: { height: 36, objectFit: "contain" },
-  supplierName: { fontSize: 14, fontFamily: "Helvetica-Bold" },
+  logo: { height: 34, objectFit: "contain" },
+  supplierName: { fontSize: 13, fontFamily: "Helvetica-Bold" },
   metaRight: { textAlign: "right" },
   docTitle: {
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: "Helvetica-Bold",
     textTransform: "uppercase",
     letterSpacing: 1,
     marginBottom: 4,
   },
   metaLine: { fontSize: 9, marginBottom: 2 },
-  metaKey: { color: "#999999" },
-  group: { marginBottom: 14 },
+  metaKey: { color: "#9aa0a3" },
   groupHead: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 4,
+    alignItems: "baseline",
+    marginBottom: 8,
   },
   groupName: { fontSize: 11, fontFamily: "Helvetica-Bold" },
-  groupSub: { fontSize: 9, color: "#666666" },
+  groupSub: { fontSize: 9, color: "#5a6b75" },
   th: {
     flexDirection: "row",
-    borderBottom: "1 solid #cccccc",
+    borderTop: "1 solid #e4ded1",
+    borderBottom: "1 solid #e4ded1",
     paddingVertical: 4,
     fontSize: 7,
-    color: "#999999",
+    color: "#8a8f92",
     textTransform: "uppercase",
   },
   row: {
     flexDirection: "row",
-    borderBottom: "0.5 solid #eeeeee",
-    paddingVertical: 3,
+    borderBottom: "0.5 solid #efeadf",
+    paddingVertical: 4,
   },
+  nonBillable: { color: "#9aa0a3" },
   subtotal: {
     flexDirection: "row",
-    borderTop: "1 solid #cccccc",
-    paddingTop: 4,
-    marginTop: 2,
+    borderTop: "1 solid #d3cdbf",
+    paddingTop: 5,
+    marginTop: 3,
     fontFamily: "Helvetica-Bold",
   },
   cDate: { width: "20%" },
   cHours: { width: "12%" },
   cDesc: { width: "48%" },
   cCost: { width: "20%", textAlign: "right" },
-  total: {
+  totalCard: {
+    backgroundColor: "#ffffff",
+    border: "1 solid #e4ded1",
+    borderRadius: 8,
+    padding: 16,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 16,
-    paddingTop: 8,
-    borderTop: "2 solid #171717",
-    fontSize: 11,
-    fontFamily: "Helvetica-Bold",
+    alignItems: "center",
   },
+  totalText: { fontSize: 12, fontFamily: "Helvetica-Bold" },
 });
 
 function TimesheetDocument({
@@ -125,7 +134,7 @@ function TimesheetDocument({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View style={styles.header}>
+        <View style={[styles.card, styles.header]}>
           <View>
             {meta.logoUrl ? (
               // eslint-disable-next-line jsx-a11y/alt-text
@@ -149,7 +158,7 @@ function TimesheetDocument({
         </View>
 
         {result.groups.map((g) => (
-          <View key={g.projectId} style={styles.group} wrap={false}>
+          <View key={g.projectId} style={styles.card} wrap={false}>
             <View style={styles.groupHead}>
               <Text style={styles.groupName}>{g.projectName ?? "—"}</Text>
               <Text style={styles.groupSub}>
@@ -171,7 +180,12 @@ function TimesheetDocument({
                 <Text style={styles.cHours}>{minutesToHours(r.minutes)}</Text>
                 <Text style={styles.cDesc}>
                   {r.description ?? "—"}
-                  {!r.billable ? ` (${meta.labels.nonBillable})` : ""}
+                  {!r.billable ? (
+                    <Text style={styles.nonBillable}>
+                      {" "}
+                      ({meta.labels.nonBillable})
+                    </Text>
+                  ) : null}
                 </Text>
                 <Text style={styles.cCost}>
                   {r.billable && r.amount != null
@@ -191,9 +205,9 @@ function TimesheetDocument({
           </View>
         ))}
 
-        <View style={styles.total}>
-          <Text>{meta.labels.total}</Text>
-          <Text>
+        <View style={styles.totalCard} wrap={false}>
+          <Text style={styles.totalText}>{meta.labels.total}</Text>
+          <Text style={styles.totalText}>
             {minutesToHours(result.totalMinutes)} h
             {totalsText ? `   ${totalsText}` : ""}
           </Text>
