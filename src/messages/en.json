@@ -25,8 +25,37 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome back",
-    "subtitle": "An overview of your firm's activity will appear here."
+    "subtitle": "An overview of your firm.",
+    "kpis": {
+      "clients": "Clients",
+      "activeProjects": "Active projects",
+      "hoursThisMonth": "Hours this month",
+      "billableThisMonth": "Billable this month",
+      "myHoursThisWeek": "My hours this week",
+      "myHoursThisMonth": "My hours this month",
+      "myBillableThisMonth": "My billable this month"
+    },
+    "compliance": {
+      "title": "Compliance",
+      "overdue": "KYC review overdue",
+      "dueSoon": "KYC review due soon",
+      "unverified": "{count, plural, =0 {No clients unverified} one {# client not verified} other {# clients not verified}}",
+      "aml": "AML attention",
+      "allClear": "All clear — nothing needs attention.",
+      "reviewDue": "Review due {date}",
+      "viewClients": "View clients"
+    },
+    "financials": {
+      "byProject": "Top projects this month",
+      "weeklyHours": "Hours per week",
+      "noData": "No billable time this month yet."
+    },
+    "myTime": {
+      "title": "My recent time",
+      "logTime": "Log time",
+      "empty": "No time logged yet."
+    },
+    "units": { "hours": "h" }
   },
   "clients": {
     "title": "Clients",

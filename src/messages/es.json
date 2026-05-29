@@ -25,8 +25,37 @@
   },
   "dashboard": {
     "title": "Panel",
-    "welcome": "Bienvenido de nuevo",
-    "subtitle": "Aquí aparecerá un resumen de la actividad de tu firma."
+    "subtitle": "Una visión general de tu firma.",
+    "kpis": {
+      "clients": "Clientes",
+      "activeProjects": "Proyectos activos",
+      "hoursThisMonth": "Horas este mes",
+      "billableThisMonth": "Facturable este mes",
+      "myHoursThisWeek": "Mis horas esta semana",
+      "myHoursThisMonth": "Mis horas este mes",
+      "myBillableThisMonth": "Mi facturable este mes"
+    },
+    "compliance": {
+      "title": "Cumplimiento",
+      "overdue": "Revisión KYC vencida",
+      "dueSoon": "Revisión KYC próxima",
+      "unverified": "{count, plural, =0 {Sin clientes sin verificar} one {# cliente sin verificar} other {# clientes sin verificar}}",
+      "aml": "AML por revisar",
+      "allClear": "Todo en orden — nada requiere atención.",
+      "reviewDue": "Revisión antes de {date}",
+      "viewClients": "Ver clientes"
+    },
+    "financials": {
+      "byProject": "Principales proyectos este mes",
+      "weeklyHours": "Horas por semana",
+      "noData": "Aún no hay tiempo facturable este mes."
+    },
+    "myTime": {
+      "title": "Mi tiempo reciente",
+      "logTime": "Registrar horas",
+      "empty": "Aún no hay tiempo registrado."
+    },
+    "units": { "hours": "h" }
   },
   "clients": {
     "title": "Clientes",

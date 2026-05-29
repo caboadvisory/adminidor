@@ -217,6 +217,7 @@ The UI follows the Cabo Advisory brand: a warm cream canvas (`#f5f3ed`), white s
 - `next-intl` — internationalization
 - `@supabase/supabase-js`, `@supabase/ssr` — auth + database
 - `@aws-sdk/client-s3`, `@aws-sdk/s3-request-presigner` — Cloudflare R2
+- `recharts` — dashboard charts
 - `zod` — validation · `clsx` + `tailwind-merge` — class utilities
 
 **Development**
@@ -226,12 +227,13 @@ The UI follows the Cabo Advisory brand: a warm cream canvas (`#f5f3ed`), white s
 ## Status & roadmap
 
 - ✅ **Foundation** — localized, auth-guarded app shell; Supabase auth with a single-firm, role-based RLS model; Cloudflare R2 storage; i18n (en/sv/es).
+- ✅ **Dashboard** — role-aware: admins get firm KPIs + a KYC/AML compliance panel; members get a personal time view. Billable/hours charts (Recharts) and recent time.
 - ✅ **Clients** — full CRUD with KYC, beneficial owners (UBO), AML screening, and documents.
 - ✅ **Projects** — full CRUD linked to clients, with hourly/fixed billing and documents.
 - ✅ **Time reporting** — log time against a project (date, duration, task, billable, auto-calculated price); per-project billing summary with fixed-price support.
 - ✅ **Reports** — time sheet (client + period, grouped by project with subtotals and totals), PDF download, and approve-to-client (saves the PDF to the client's documents).
 - ✅ **Admin** — user management (add / edit / deactivate) and CSV export of all time entries.
-- ⬜ **Future** — invoicing, dashboard metrics, AML screening-provider integration, and deployment.
+- ⬜ **Future** — invoicing, AML screening-provider integration, and deployment.
 
 ## Learn more
 
