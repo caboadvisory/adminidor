@@ -131,6 +131,7 @@
     "upload": "Subir documento",
     "uploading": "Subiendo…",
     "download": "Descargar",
+    "report": "Informe",
     "empty": "No hay documentos subidos.",
     "notConfigured": "El almacenamiento de archivos no está configurado.",
     "error": "La subida falló. Inténtalo de nuevo."
@@ -228,6 +229,11 @@
       "subtotal": "Subtotal",
       "total": "Total",
       "nonBillable": "No facturable",
+      "download": "Descargar PDF",
+      "approve": "Aprobar y guardar en el cliente",
+      "approving": "Guardando…",
+      "approved": "Guardado en los documentos del cliente.",
+      "error": "No se pudo generar o guardar el informe.",
       "columns": {
         "date": "Fecha",
         "hours": "Horas",

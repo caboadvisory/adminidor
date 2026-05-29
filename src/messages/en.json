@@ -131,6 +131,7 @@
     "upload": "Upload document",
     "uploading": "Uploading…",
     "download": "Download",
+    "report": "Report",
     "empty": "No documents uploaded.",
     "notConfigured": "File storage is not configured.",
     "error": "Upload failed. Please try again."
@@ -228,6 +229,11 @@
       "subtotal": "Subtotal",
       "total": "Total",
       "nonBillable": "Non-billable",
+      "download": "Download PDF",
+      "approve": "Approve & save to client",
+      "approving": "Saving…",
+      "approved": "Saved to client documents.",
+      "error": "Couldn't generate or save the report.",
       "columns": {
         "date": "Date",
         "hours": "Hours",

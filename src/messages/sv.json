@@ -131,6 +131,7 @@
     "upload": "Ladda upp dokument",
     "uploading": "Laddar upp…",
     "download": "Ladda ner",
+    "report": "Rapport",
     "empty": "Inga dokument uppladdade.",
     "notConfigured": "Fillagring är inte konfigurerad.",
     "error": "Uppladdningen misslyckades. Försök igen."
@@ -228,6 +229,11 @@
       "subtotal": "Delsumma",
       "total": "Totalt",
       "nonBillable": "Ej fakturerbar",
+      "download": "Ladda ner PDF",
+      "approve": "Godkänn & spara till klient",
+      "approving": "Sparar…",
+      "approved": "Sparad i klientens dokument.",
+      "error": "Kunde inte generera eller spara rapporten.",
       "columns": {
         "date": "Datum",
         "hours": "Timmar",

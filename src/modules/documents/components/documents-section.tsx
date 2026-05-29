@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/navigation";
 import { requestUploadUrl } from "@/lib/r2/actions";
@@ -106,7 +107,12 @@ export function DocumentsSection({
               className="flex items-center justify-between gap-4 py-3 text-sm"
             >
               <div className="min-w-0">
-                <div className="truncate font-medium">{d.fileName}</div>
+                <div className="flex items-center gap-2">
+                  <span className="truncate font-medium">{d.fileName}</span>
+                  {d.kind === "report" ? (
+                    <Badge tone="blue">{t("report")}</Badge>
+                  ) : null}
+                </div>
                 <div className="text-foreground/60">
                   {dateFmt.format(new Date(d.createdAt))}
                   {d.sizeBytes != null ? ` · ${formatSize(d.sizeBytes)}` : ""}

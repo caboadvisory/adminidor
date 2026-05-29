@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  // @react-pdf/renderer is a heavy Node library; don't bundle it.
+  serverExternalPackages: ["@react-pdf/renderer"],
 };
 
 export default withNextIntl(nextConfig);

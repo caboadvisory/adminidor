@@ -4,8 +4,10 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { FIRM_LOGO_URL, FIRM_NAME } from "@/lib/firm";
+import { isCurrentUserAdmin } from "@/lib/supabase/auth";
 import { Link } from "@/i18n/navigation";
 import { listClients } from "@/modules/clients/queries";
+import { ApproveReportButton } from "@/modules/reports/components/approve-report-button";
 import { getTimesheet } from "@/modules/reports/queries";
 import { minutesToHours } from "@/modules/time/display";
 
@@ -33,6 +35,8 @@ export default async function TimesheetReportPage({
   const result = hasFilter
     ? await getTimesheet({ clientId, from, to })
     : null;
+  const isAdmin = hasFilter ? await isCurrentUserAdmin() : false;
+  const pdfHref = `/${locale}/reports/timesheet/pdf?clientId=${encodeURIComponent(clientId)}&from=${from}&to=${to}`;
 
   const dateFmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
   const numFmt = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
@@ -127,6 +131,18 @@ export default async function TimesheetReportPage({
               </dl>
             </div>
           </Card>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href={pdfHref}
+              className="inline-flex h-10 items-center justify-center rounded-md border border-black/10 px-4 text-sm font-medium transition hover:bg-black/[.04] dark:border-white/15 dark:hover:bg-white/[.06]"
+            >
+              {t("timesheet.download")}
+            </a>
+            {isAdmin ? (
+              <ApproveReportButton clientId={clientId} from={from} to={to} />
+            ) : null}
+          </div>
 
           {result.groups.length === 0 ? (
             <Card className="text-sm text-foreground/60">

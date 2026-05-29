@@ -35,7 +35,7 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 
 ### Reports
 
-- A reports hub (`/reports`). The first report — **Time sheet** (`/reports/timesheet`) — takes a **client** and a **date range** and lists all logged time for that client in the period (date, hours, description, cost), **grouped by project** with per-project subtotals and an overall total (per currency). It is headed by the configurable **supplier** (name + optional logo, see `NEXT_PUBLIC_FIRM_*`), the **client**, and the **period**. Non-billable entries are shown but excluded from cost totals. The filter is encoded in the URL, so a report view is shareable. Read-only for all staff.
+- A reports hub (`/reports`). The first report — **Time sheet** (`/reports/timesheet`) — takes a **client** and a **date range** and lists all logged time for that client in the period (date, hours, description, cost), **grouped by project** with per-project subtotals and an overall total (per currency). It is headed by the configurable **supplier** (name + optional logo, see `NEXT_PUBLIC_FIRM_*`), the **client**, and the **period**. Non-billable entries are shown but excluded from cost totals. The filter is encoded in the URL, so a report view is shareable. Reports **download as a PDF** (server-rendered via `@react-pdf/renderer`), and an **admin** can **approve** a report to save the PDF onto the client as a `report` document. Viewing/downloading is open to all staff; approving is admin-only.
 
 ## Tech stack
 
@@ -62,6 +62,7 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
    - `supabase/migrations/0002_clients_kyc_aml.sql`
    - `supabase/migrations/0003_billing_rates.sql`
    - `supabase/migrations/0004_default_currency_eur.sql`
+   - `supabase/migrations/0005_document_kind.sql`
 4. Configure the **R2 bucket CORS** policy so the browser can upload (see [File storage](#file-storage-cloudflare-r2)).
 5. Create an admin user (see [Authentication & roles](#authentication--roles)).
 6. Run the dev server:
@@ -116,7 +117,7 @@ Postgres tables (all with Row Level Security enabled):
 - `aml_screenings` — AML screening log linked to a client.
 - `projects` — linked to a client; status, hourly rate or fixed price (billing type), currency, dates.
 - `time_entries` — linked to a project and a user; date, minutes, description, billable, and amount (auto-calculated, editable) + the unit rate applied.
-- `documents` — R2 object metadata (owner type/id, key, filename, size).
+- `documents` — R2 object metadata (owner type/id, key, filename, size, and `kind`: general or report).
 
 **RLS summary:** authenticated staff can read all firm data; clients and KYC/AML records are admin-write; users manage their own time entries and document uploads. Admin checks use a `public.is_admin()` `SECURITY DEFINER` function to avoid policy recursion. Schema changes live in `supabase/migrations/` and must be applied in order.
 
@@ -213,7 +214,7 @@ supabase/migrations/           # 0001_init.sql, 0002_clients_kyc_aml.sql
 - ✅ **Clients** — full CRUD with KYC, beneficial owners (UBO), AML screening, and documents.
 - ✅ **Projects** — full CRUD linked to clients, with hourly/fixed billing and documents.
 - ✅ **Time reporting** — log time against a project (date, duration, task, billable, auto-calculated price); per-project billing summary with fixed-price support.
-- ✅ **Reports** — time sheet (client + period, grouped by project with subtotals and totals).
+- ✅ **Reports** — time sheet (client + period, grouped by project with subtotals and totals), PDF download, and approve-to-client (saves the PDF to the client's documents).
 - ⬜ **Future** — invoicing / exports, dashboard metrics, AML screening-provider integration, and deployment.
 
 ## Learn more

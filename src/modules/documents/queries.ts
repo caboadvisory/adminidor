@@ -12,6 +12,7 @@ export function mapDocument(row: any): StoredDocument {
     r2Key: row.r2_key,
     contentType: row.content_type,
     sizeBytes: row.size_bytes == null ? null : Number(row.size_bytes),
+    kind: row.kind ?? "general",
     uploadedBy: row.uploaded_by,
     createdAt: row.created_at,
   };
