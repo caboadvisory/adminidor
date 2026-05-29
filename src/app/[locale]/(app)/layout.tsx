@@ -1,7 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { AppShell } from "@/components/app-shell/app-shell";
 import { redirect } from "@/i18n/navigation";
-import { getCurrentUser } from "@/lib/supabase/auth";
+import { getCurrentUser, isCurrentUserAdmin } from "@/lib/supabase/auth";
 
 type Props = {
   children: React.ReactNode;
@@ -18,5 +18,11 @@ export default async function AppLayout({ children, params }: Props) {
     return null;
   }
 
-  return <AppShell userEmail={user.email ?? ""}>{children}</AppShell>;
+  const isAdmin = await isCurrentUserAdmin();
+
+  return (
+    <AppShell userEmail={user.email ?? ""} isAdmin={isAdmin}>
+      {children}
+    </AppShell>
+  );
 }

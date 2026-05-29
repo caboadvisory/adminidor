@@ -5,17 +5,18 @@ import { UserMenu } from "./user-menu";
 
 type Props = {
   userEmail: string;
+  isAdmin: boolean;
   children: React.ReactNode;
 };
 
-export function AppShell({ userEmail, children }: Props) {
+export function AppShell({ userEmail, isAdmin, children }: Props) {
   const t = useTranslations("app");
 
   return (
     <div className="grid min-h-dvh grid-cols-1 md:grid-cols-[16rem_1fr]">
       <aside className="hidden border-r border-black/[.08] md:flex md:flex-col dark:border-white/[.12]">
         <div className="px-6 py-5 text-lg font-semibold">{t("name")}</div>
-        <Sidebar />
+        <Sidebar isAdmin={isAdmin} />
       </aside>
 
       <div className="flex min-h-dvh flex-col">

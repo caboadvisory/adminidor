@@ -8,7 +8,8 @@
     "clients": "Klienter",
     "projects": "Projekt",
     "time": "Tidrapportering",
-    "reports": "Rapporter"
+    "reports": "Rapporter",
+    "admin": "Admin"
   },
   "auth": {
     "signIn": "Logga in",
@@ -240,6 +241,49 @@
         "description": "Beskrivning",
         "cost": "Kostnad"
       }
+    }
+  },
+  "admin": {
+    "title": "Admin",
+    "subtitle": "Hantera användare och exportera data.",
+    "exportCsv": "Exportera tidsposter (CSV)",
+    "users": {
+      "title": "Användare",
+      "add": "Lägg till användare",
+      "empty": "Inga användare ännu."
+    },
+    "createTitle": "Lägg till användare",
+    "editTitle": "Redigera användare",
+    "backToUsers": "Tillbaka till admin",
+    "fields": {
+      "email": "E-post",
+      "password": "Lösenord",
+      "passwordOptional": "Nytt lösenord (lämna tomt för att behålla)",
+      "fullName": "Fullständigt namn",
+      "role": "Roll",
+      "language": "Språk",
+      "status": "Status"
+    },
+    "roles": {
+      "admin": "Administratör",
+      "member": "Medlem"
+    },
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Inaktiverad"
+    },
+    "actions": {
+      "edit": "Redigera",
+      "activate": "Aktivera",
+      "deactivate": "Inaktivera"
+    },
+    "errors": {
+      "validation": "Kontrollera formuläret och försök igen.",
+      "forbidden": "Du har inte behörighet att göra detta.",
+      "selfRole": "Du kan inte ändra din egen roll.",
+      "selfDeactivate": "Du kan inte inaktivera ditt eget konto.",
+      "notConfigured": "Admin-API är inte konfigurerat (service role-nyckel saknas).",
+      "generic": "Något gick fel. Försök igen."
     }
   },
   "common": {

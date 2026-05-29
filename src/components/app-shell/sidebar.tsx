@@ -4,17 +4,20 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-const items = [
+const baseItems = [
   { href: "/", key: "dashboard" },
   { href: "/clients", key: "clients" },
   { href: "/projects", key: "projects" },
   { href: "/time", key: "time" },
   { href: "/reports", key: "reports" },
-] as const;
+];
 
-export function Sidebar() {
+export function Sidebar({ isAdmin }: { isAdmin: boolean }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
+  const items = isAdmin
+    ? [...baseItems, { href: "/admin", key: "admin" }]
+    : baseItems;
 
   return (
     <nav className="flex flex-col gap-1 px-3">

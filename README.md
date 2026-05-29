@@ -10,6 +10,7 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 | **Projects** | Built | Linked to a client; status, hourly rate, currency, dates, and R2 document storage |
 | **Time reporting** | Built | Entries linked to a project + user: date, duration, task, billable flag, and an auto-calculated (editable) price |
 | **Reports** | Built | Time sheet: logged time + cost for a client over a period, grouped by project |
+| **Admin** | Built | Admin-only: manage users (add/edit/deactivate) and export all time entries to CSV |
 
 ### Clients — KYC / AML
 
@@ -36,6 +37,12 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 ### Reports
 
 - A reports hub (`/reports`). The first report — **Time sheet** (`/reports/timesheet`) — takes a **client** and a **date range** and lists all logged time for that client in the period (date, hours, description, cost), **grouped by project** with per-project subtotals and an overall total (per currency). It is headed by the configurable **supplier** (name + optional logo, see `NEXT_PUBLIC_FIRM_*`), the **client**, and the **period**. Non-billable entries are shown but excluded from cost totals. The filter is encoded in the URL, so a report view is shareable. Reports **download as a PDF** (server-rendered via `@react-pdf/renderer`), and an **admin** can **approve** a report to save the PDF onto the client as a `report` document. Viewing/downloading is open to all staff; approving is admin-only.
+
+### Admin
+
+- Visible only to administrators (`/admin`). Admins can **add, edit, and deactivate users**. New users are created with a password and auto-confirmed; deactivation bans sign-in but keeps all records (soft delete). Lockout protection prevents demoting or deactivating your own account.
+- **Export**: all time entries to **CSV** — columns: client, project, user, date, hours, description, cost, currency.
+- Uses a service-role Supabase client (`src/lib/supabase/admin.ts`) for the Auth admin API; only ever called from admin-gated server actions / routes.
 
 ## Tech stack
 
@@ -215,7 +222,8 @@ supabase/migrations/           # 0001_init.sql, 0002_clients_kyc_aml.sql
 - ✅ **Projects** — full CRUD linked to clients, with hourly/fixed billing and documents.
 - ✅ **Time reporting** — log time against a project (date, duration, task, billable, auto-calculated price); per-project billing summary with fixed-price support.
 - ✅ **Reports** — time sheet (client + period, grouped by project with subtotals and totals), PDF download, and approve-to-client (saves the PDF to the client's documents).
-- ⬜ **Future** — invoicing / exports, dashboard metrics, AML screening-provider integration, and deployment.
+- ✅ **Admin** — user management (add / edit / deactivate) and CSV export of all time entries.
+- ⬜ **Future** — invoicing, dashboard metrics, AML screening-provider integration, and deployment.
 
 ## Learn more
 

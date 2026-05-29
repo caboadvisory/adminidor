@@ -8,7 +8,8 @@
     "clients": "Clients",
     "projects": "Projects",
     "time": "Time reporting",
-    "reports": "Reports"
+    "reports": "Reports",
+    "admin": "Admin"
   },
   "auth": {
     "signIn": "Sign in",
@@ -240,6 +241,49 @@
         "description": "Description",
         "cost": "Cost"
       }
+    }
+  },
+  "admin": {
+    "title": "Admin",
+    "subtitle": "Manage users and export data.",
+    "exportCsv": "Export time entries (CSV)",
+    "users": {
+      "title": "Users",
+      "add": "Add user",
+      "empty": "No users yet."
+    },
+    "createTitle": "Add user",
+    "editTitle": "Edit user",
+    "backToUsers": "Back to admin",
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "passwordOptional": "New password (leave blank to keep)",
+      "fullName": "Full name",
+      "role": "Role",
+      "language": "Language",
+      "status": "Status"
+    },
+    "roles": {
+      "admin": "Administrator",
+      "member": "Member"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Deactivated"
+    },
+    "actions": {
+      "edit": "Edit",
+      "activate": "Activate",
+      "deactivate": "Deactivate"
+    },
+    "errors": {
+      "validation": "Please check the form and try again.",
+      "forbidden": "You don't have permission to do this.",
+      "selfRole": "You can't change your own role.",
+      "selfDeactivate": "You can't deactivate your own account.",
+      "notConfigured": "Admin API is not configured (service role key missing).",
+      "generic": "Something went wrong. Please try again."
     }
   },
   "common": {

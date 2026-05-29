@@ -8,7 +8,8 @@
     "clients": "Clientes",
     "projects": "Proyectos",
     "time": "Registro de horas",
-    "reports": "Informes"
+    "reports": "Informes",
+    "admin": "Administración"
   },
   "auth": {
     "signIn": "Iniciar sesión",
@@ -240,6 +241,49 @@
         "description": "Descripción",
         "cost": "Coste"
       }
+    }
+  },
+  "admin": {
+    "title": "Administración",
+    "subtitle": "Gestiona usuarios y exporta datos.",
+    "exportCsv": "Exportar registros de horas (CSV)",
+    "users": {
+      "title": "Usuarios",
+      "add": "Añadir usuario",
+      "empty": "Aún no hay usuarios."
+    },
+    "createTitle": "Añadir usuario",
+    "editTitle": "Editar usuario",
+    "backToUsers": "Volver a administración",
+    "fields": {
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "passwordOptional": "Nueva contraseña (déjala en blanco para mantener)",
+      "fullName": "Nombre completo",
+      "role": "Rol",
+      "language": "Idioma",
+      "status": "Estado"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "member": "Miembro"
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Desactivado"
+    },
+    "actions": {
+      "edit": "Editar",
+      "activate": "Activar",
+      "deactivate": "Desactivar"
+    },
+    "errors": {
+      "validation": "Revisa el formulario e inténtalo de nuevo.",
+      "forbidden": "No tienes permiso para hacer esto.",
+      "selfRole": "No puedes cambiar tu propio rol.",
+      "selfDeactivate": "No puedes desactivar tu propia cuenta.",
+      "notConfigured": "La API de administración no está configurada (falta la clave service role).",
+      "generic": "Algo salió mal. Inténtalo de nuevo."
     }
   },
   "common": {
