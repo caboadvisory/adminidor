@@ -44,12 +44,12 @@ export function ApproveReportButton({
         {state === "loading" ? t("timesheet.approving") : t("timesheet.approve")}
       </Button>
       {state === "done" ? (
-        <span className="text-sm text-green-700 dark:text-green-400">
+        <span className="text-sm text-emerald-700">
           {t("timesheet.approved")}
         </span>
       ) : null}
       {error ? (
-        <span className="text-sm text-red-600 dark:text-red-400">{error}</span>
+        <span className="text-sm text-red-700">{error}</span>
       ) : null}
     </div>
   );

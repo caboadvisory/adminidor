@@ -45,7 +45,7 @@ export default async function TimePage({ params }: Props) {
       ) : (
         <Card className="overflow-x-auto p-0">
           <table className="w-full text-sm">
-            <thead className="border-b border-black/[.08] text-left text-xs uppercase tracking-wide text-foreground/50 dark:border-white/[.12]">
+            <thead className="border-b border-border text-left text-xs uppercase tracking-wide text-foreground/50">
               <tr>
                 <th className="px-4 py-3 font-medium">{t("fields.date")}</th>
                 <th className="px-4 py-3 font-medium">{t("fields.project")}</th>
@@ -60,7 +60,7 @@ export default async function TimePage({ params }: Props) {
               {entries.map((e) => (
                 <tr
                   key={e.id}
-                  className="border-b border-black/[.05] last:border-0 dark:border-white/[.06]"
+                  className="border-b border-border last:border-0"
                 >
                   <td className="px-4 py-3 whitespace-nowrap text-foreground/70">
                     {dateFmt.format(new Date(e.workDate))}

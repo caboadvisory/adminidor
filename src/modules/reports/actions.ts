@@ -3,11 +3,12 @@
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { getLocale } from "next-intl/server";
-import { FIRM_LOGO_URL, FIRM_NAME } from "@/lib/firm";
+import { FIRM_NAME } from "@/lib/firm";
 import { isR2Configured } from "@/lib/r2/config";
 import { putObject } from "@/lib/r2/storage";
 import { createClient as createServerSupabase } from "@/lib/supabase/server";
 import { buildTimesheetLabels } from "./labels";
+import { getPdfLogoDataUri } from "./pdf-logo";
 import { renderTimesheetPdf } from "./pdf";
 import { getTimesheet } from "./queries";
 
@@ -46,14 +47,15 @@ export async function approveTimesheet(input: {
   const clientName = client?.name ?? "";
 
   const locale = await getLocale();
-  const [result, labels] = await Promise.all([
+  const [result, labels, logoUrl] = await Promise.all([
     getTimesheet({ clientId, from, to }),
     buildTimesheetLabels(locale),
+    getPdfLogoDataUri(),
   ]);
 
   const pdf = await renderTimesheetPdf(result, {
     firmName: FIRM_NAME,
-    logoUrl: FIRM_LOGO_URL || undefined,
+    logoUrl,
     clientName,
     from,
     to,

@@ -135,7 +135,7 @@ export default async function TimesheetReportPage({
           <div className="flex flex-wrap items-center gap-3">
             <a
               href={pdfHref}
-              className="inline-flex h-10 items-center justify-center rounded-md border border-black/10 px-4 text-sm font-medium transition hover:bg-black/[.04] dark:border-white/15 dark:hover:bg-white/[.06]"
+              className="inline-flex h-10 items-center justify-center rounded-md border border-border-strong px-4 text-sm font-medium transition hover:bg-surface-2"
             >
               {t("timesheet.download")}
             </a>
@@ -160,7 +160,7 @@ export default async function TimesheetReportPage({
                 </span>
               </div>
               <table className="w-full text-sm">
-                <thead className="border-y border-black/[.08] text-left text-xs uppercase tracking-wide text-foreground/50 dark:border-white/[.12]">
+                <thead className="border-y border-border text-left text-xs uppercase tracking-wide text-foreground/50">
                   <tr>
                     <th className="px-4 py-2 font-medium">
                       {t("timesheet.columns.date")}
@@ -180,7 +180,7 @@ export default async function TimesheetReportPage({
                   {g.rows.map((r, i) => (
                     <tr
                       key={`${g.projectId}-${i}`}
-                      className="border-b border-black/[.05] last:border-0 dark:border-white/[.06]"
+                      className="border-b border-border last:border-0"
                     >
                       <td className="px-4 py-2 whitespace-nowrap text-foreground/70">
                         {dateFmt.format(new Date(r.date))}
@@ -205,7 +205,7 @@ export default async function TimesheetReportPage({
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr className="border-t border-black/[.08] font-medium dark:border-white/[.12]">
+                  <tr className="border-t border-border font-medium">
                     <td className="px-4 py-2">{t("timesheet.subtotal")}</td>
                     <td className="px-4 py-2">
                       {minutesToHours(g.subtotalMinutes)}

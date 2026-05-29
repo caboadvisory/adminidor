@@ -96,7 +96,7 @@ export default async function ClientDetailPage({ params }: Props) {
           <div className="flex items-center gap-3">
             <Link
               href={`/clients/${id}/edit`}
-              className="inline-flex h-9 items-center rounded-md border border-black/10 px-3 text-sm font-medium transition hover:bg-black/[.04] dark:border-white/15 dark:hover:bg-white/[.06]"
+              className="inline-flex h-9 items-center rounded-md border border-border-strong px-3 text-sm font-medium transition hover:bg-surface-2"
             >
               {tc("edit")}
             </Link>

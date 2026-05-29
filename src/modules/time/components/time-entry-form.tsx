@@ -240,7 +240,7 @@ export function TimeEntryForm({ mode, entryId, initial, projects }: Props) {
       </Card>
 
       {error ? (
-        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+        <p className="text-sm text-red-700">{error}</p>
       ) : null}
 
       <div className="flex items-center gap-3">
@@ -249,7 +249,7 @@ export function TimeEntryForm({ mode, entryId, initial, projects }: Props) {
         </Button>
         <Link
           href="/time"
-          className="inline-flex h-10 items-center justify-center rounded-md px-4 text-sm font-medium text-foreground/70 transition hover:bg-black/[.04] dark:hover:bg-white/[.06]"
+          className="inline-flex h-10 items-center justify-center rounded-md px-4 text-sm font-medium text-foreground/70 transition hover:bg-surface-2"
         >
           {tc("cancel")}
         </Link>

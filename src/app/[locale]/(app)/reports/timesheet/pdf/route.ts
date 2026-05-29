@@ -1,7 +1,8 @@
-import { FIRM_LOGO_URL, FIRM_NAME } from "@/lib/firm";
+import { FIRM_NAME } from "@/lib/firm";
 import { getCurrentUser } from "@/lib/supabase/auth";
 import { listClients } from "@/modules/clients/queries";
 import { buildTimesheetLabels } from "@/modules/reports/labels";
+import { getPdfLogoDataUri } from "@/modules/reports/pdf-logo";
 import { renderTimesheetPdf } from "@/modules/reports/pdf";
 import { getTimesheet } from "@/modules/reports/queries";
 
@@ -22,16 +23,17 @@ export async function GET(
     return new Response("Missing clientId, from or to", { status: 400 });
   }
 
-  const [result, clients, labels] = await Promise.all([
+  const [result, clients, labels, logoUrl] = await Promise.all([
     getTimesheet({ clientId, from, to }),
     listClients(),
     buildTimesheetLabels(locale),
+    getPdfLogoDataUri(),
   ]);
   const clientName = clients.find((c) => c.id === clientId)?.name ?? "";
 
   const pdf = await renderTimesheetPdf(result, {
     firmName: FIRM_NAME,
-    logoUrl: FIRM_LOGO_URL || undefined,
+    logoUrl,
     clientName,
     from,
     to,

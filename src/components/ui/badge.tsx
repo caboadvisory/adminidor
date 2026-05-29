@@ -4,11 +4,13 @@ import { cn } from "@/lib/utils";
 export type BadgeTone = "neutral" | "green" | "amber" | "red" | "blue";
 
 const tones: Record<BadgeTone, string> = {
-  neutral: "bg-black/[.06] text-foreground/70 dark:bg-white/[.08]",
-  green: "bg-green-500/15 text-green-700 dark:text-green-400",
-  amber: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
-  red: "bg-red-500/15 text-red-700 dark:text-red-400",
-  blue: "bg-blue-500/15 text-blue-700 dark:text-blue-400",
+  // neutral + blue sit in the brand slate family; green/amber/red stay
+  // semantic (verified / medium / high-risk etc.) but kept muted.
+  neutral: "bg-black/[.05] text-foreground/70",
+  blue: "bg-primary/15 text-[#46627a]",
+  green: "bg-emerald-600/15 text-emerald-800",
+  amber: "bg-amber-500/20 text-amber-800",
+  red: "bg-red-500/15 text-red-800",
 };
 
 type Props = HTMLAttributes<HTMLSpanElement> & { tone?: BadgeTone };

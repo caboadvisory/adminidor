@@ -32,10 +32,10 @@ export function Sidebar({ isAdmin }: { isAdmin: boolean }) {
             key={item.href}
             href={item.href}
             className={cn(
-              "rounded-md px-3 py-2 text-sm font-medium transition",
+              "rounded-md px-3 py-2 text-sm font-medium transition-colors",
               active
-                ? "bg-foreground text-background"
-                : "text-foreground/70 hover:bg-black/[.04] hover:text-foreground dark:hover:bg-white/[.06]",
+                ? "bg-primary text-primary-foreground"
+                : "text-foreground/70 hover:bg-surface-2 hover:text-foreground",
             )}
           >
             {t(item.key)}

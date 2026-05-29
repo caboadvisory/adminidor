@@ -1,26 +1,57 @@
 @import "tailwindcss";
 
+/* --- Cabo Advisory brand palette ---------------------------------------
+   Soft cream + muted slate blues. The palette is low-contrast, so per the
+   brand accessibility note: palette colours are SURFACES / ACCENTS / large
+   headings only; body copy uses the derived dark slate (--cabo-text). */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cabo-cream: #f5f3ed; /* page background */
+  --cabo-surface: #ffffff; /* cards, sidebar, header */
+  --cabo-surface-2: #faf9f4; /* subtle raised / hover surface */
+  --cabo-text: #2b3a44; /* body copy (derived, AA on cream) */
+  --cabo-muted: #5a6b75; /* secondary text */
+  --cabo-border: #e4ded1; /* warm divider on cream */
+  --cabo-border-strong: #d3cdbf;
+  --cabo-primary: #7797ae; /* primary accent (deepest brand blue) */
+  --cabo-primary-hover: #6a8aa2; /* darker hover */
+  --cabo-accent-1: #a7b5bd;
+  --cabo-accent-2: #8fa6b5;
+  --cabo-decorative: #bfc4c5; /* decorative gray — dividers / idle only */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-background: var(--cabo-cream);
+  --color-surface: var(--cabo-surface);
+  --color-surface-2: var(--cabo-surface-2);
+  --color-foreground: var(--cabo-text);
+  --color-muted: var(--cabo-muted);
+  --color-border: var(--cabo-border);
+  --color-border-strong: var(--cabo-border-strong);
+  --color-primary: var(--cabo-primary);
+  --color-primary-hover: var(--cabo-primary-hover);
+  --color-primary-foreground: #ffffff;
+  --color-accent: var(--cabo-primary);
+  --color-accent-1: var(--cabo-accent-1);
+  --color-accent-2: var(--cabo-accent-2);
+  --color-decorative: var(--cabo-decorative);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-questrial);
+  --font-heading: var(--font-oswald);
+  --font-display: var(--font-saira-stencil);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+/* Restrained heading treatment: clean condensed Oswald for in-app headings;
+   the stencil display face is reserved for brand moments (wordmark, login). */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  letter-spacing: 0.01em;
 }

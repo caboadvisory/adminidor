@@ -1,18 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Questrial, Oswald, Saira_Stencil_One } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Body / UI — Questrial (brand body font).
+const questrial = Questrial({
+  weight: "400",
+  variable: "--font-questrial",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// In-app headings — Oswald (clean condensed).
+const oswald = Oswald({
+  variable: "--font-oswald",
+  subsets: ["latin"],
+});
+
+// Brand display / wordmark — Saira Stencil One.
+const sairaStencil = Saira_Stencil_One({
+  weight: "400",
+  variable: "--font-saira-stencil",
   subsets: ["latin"],
 });
 
@@ -41,7 +51,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${questrial.variable} ${oswald.variable} ${sairaStencil.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background text-foreground">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>

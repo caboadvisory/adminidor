@@ -37,7 +37,7 @@ export default async function AdminPage({ params }: Props) {
         </div>
         <a
           href={exportHref}
-          className="inline-flex h-10 items-center justify-center rounded-md border border-black/10 px-4 text-sm font-medium transition hover:bg-black/[.04] dark:border-white/15 dark:hover:bg-white/[.06]"
+          className="inline-flex h-10 items-center justify-center rounded-md border border-border-strong px-4 text-sm font-medium transition hover:bg-surface-2"
         >
           {t("exportCsv")}
         </a>
@@ -60,7 +60,7 @@ export default async function AdminPage({ params }: Props) {
       ) : (
         <Card className="overflow-x-auto p-0">
           <table className="w-full text-sm">
-            <thead className="border-b border-black/[.08] text-left text-xs uppercase tracking-wide text-foreground/50 dark:border-white/[.12]">
+            <thead className="border-b border-border text-left text-xs uppercase tracking-wide text-foreground/50">
               <tr>
                 <th className="px-4 py-3 font-medium">{t("fields.email")}</th>
                 <th className="px-4 py-3 font-medium">{t("fields.fullName")}</th>
@@ -73,7 +73,7 @@ export default async function AdminPage({ params }: Props) {
               {users.map((u) => (
                 <tr
                   key={u.id}
-                  className="border-b border-black/[.05] last:border-0 dark:border-white/[.06]"
+                  className="border-b border-border last:border-0"
                 >
                   <td className="px-4 py-3">{u.email}</td>
                   <td className="px-4 py-3 text-foreground/70">

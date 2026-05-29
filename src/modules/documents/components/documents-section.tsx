@@ -100,7 +100,7 @@ export function DocumentsSection({
       {documents.length === 0 ? (
         <p className="text-sm text-foreground/60">{t("empty")}</p>
       ) : (
-        <ul className="divide-y divide-black/[.06] dark:divide-white/[.08]">
+        <ul className="divide-y divide-border">
           {documents.map((d) => (
             <li
               key={d.id}
@@ -129,7 +129,7 @@ export function DocumentsSection({
                 <button
                   type="button"
                   onClick={() => onDelete(d.id)}
-                  className="text-xs text-red-600 hover:underline dark:text-red-400"
+                  className="text-xs text-red-700 hover:underline"
                 >
                   {tc("delete")}
                 </button>
@@ -139,7 +139,7 @@ export function DocumentsSection({
         </ul>
       )}
 
-      <div className="flex flex-wrap items-center gap-3 border-t border-black/[.06] pt-4 dark:border-white/[.08]">
+      <div className="flex flex-wrap items-center gap-3 border-t border-border pt-4">
         <input
           ref={fileRef}
           type="file"
@@ -155,7 +155,7 @@ export function DocumentsSection({
         </Button>
       </div>
       {error ? (
-        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+        <p className="text-sm text-red-700">{error}</p>
       ) : null}
     </div>
   );

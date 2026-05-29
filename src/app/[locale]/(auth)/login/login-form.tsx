@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
+import { Wordmark } from "@/components/brand/wordmark";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,7 +12,6 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 export function LoginForm() {
   const t = useTranslations("auth");
-  const tApp = useTranslations("app");
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -52,9 +52,9 @@ export function LoginForm() {
 
   return (
     <Card className="w-full max-w-sm">
-      <div className="mb-6 space-y-1">
-        <h1 className="text-xl font-semibold">{tApp("name")}</h1>
-        <p className="text-sm text-foreground/60">{t("signInSubtitle")}</p>
+      <div className="mb-8 flex flex-col items-center gap-4 text-center">
+        <Wordmark className="h-7" />
+        <p className="text-sm text-muted">{t("signInSubtitle")}</p>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-4">
@@ -87,7 +87,7 @@ export function LoginForm() {
         </div>
 
         {error ? (
-          <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+          <p className="text-sm text-red-700">{error}</p>
         ) : null}
 
         <Button type="submit" className="w-full" disabled={loading}>

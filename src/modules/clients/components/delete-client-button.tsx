@@ -30,7 +30,7 @@ export function DeleteClientButton({ id }: { id: string }) {
       variant="secondary"
       onClick={onClick}
       disabled={loading}
-      className="h-9 px-3 text-red-600 dark:text-red-400"
+      className="h-9 px-3 text-red-700"
     >
       {loading ? tc("deleting") : tc("delete")}
     </Button>

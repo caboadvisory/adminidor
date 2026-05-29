@@ -77,7 +77,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           <div className="flex items-center gap-3">
             <Link
               href={`/projects/${id}/edit`}
-              className="inline-flex h-9 items-center rounded-md border border-black/10 px-3 text-sm font-medium transition hover:bg-black/[.04] dark:border-white/15 dark:hover:bg-white/[.06]"
+              className="inline-flex h-9 items-center rounded-md border border-border-strong px-3 text-sm font-medium transition hover:bg-surface-2"
             >
               {tc("edit")}
             </Link>
@@ -155,7 +155,7 @@ export default async function ProjectDetailPage({ params }: Props) {
         {entries.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="border-y border-black/[.08] text-left text-xs uppercase tracking-wide text-foreground/50 dark:border-white/[.12]">
+              <thead className="border-y border-border text-left text-xs uppercase tracking-wide text-foreground/50">
                 <tr>
                   <th className="py-2 pr-4 font-medium">{tTime("fields.date")}</th>
                   <th className="py-2 pr-4 font-medium">{tTime("fields.user")}</th>
@@ -167,7 +167,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                 {entries.map((e) => (
                   <tr
                     key={e.id}
-                    className="border-b border-black/[.05] last:border-0 dark:border-white/[.06]"
+                    className="border-b border-border last:border-0"
                   >
                     <td className="py-2 pr-4 whitespace-nowrap text-foreground/70">
                       {dateFmt.format(new Date(e.workDate))}

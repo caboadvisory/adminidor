@@ -39,7 +39,7 @@ export default async function ProjectsPage({ params }: Props) {
       ) : (
         <Card className="overflow-x-auto p-0">
           <table className="w-full text-sm">
-            <thead className="border-b border-black/[.08] text-left text-xs uppercase tracking-wide text-foreground/50 dark:border-white/[.12]">
+            <thead className="border-b border-border text-left text-xs uppercase tracking-wide text-foreground/50">
               <tr>
                 <th className="px-4 py-3 font-medium">{t("fields.name")}</th>
                 <th className="px-4 py-3 font-medium">{t("fields.client")}</th>
@@ -52,7 +52,7 @@ export default async function ProjectsPage({ params }: Props) {
               {projects.map((p) => (
                 <tr
                   key={p.id}
-                  className="border-b border-black/[.05] last:border-0 dark:border-white/[.06]"
+                  className="border-b border-border last:border-0"
                 >
                   <td className="px-4 py-3">
                     <Link

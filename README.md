@@ -201,6 +201,14 @@ supabase/migrations/           # 0001_init.sql, 0002_clients_kyc_aml.sql
 - **Tailwind v4** is CSS-first — theme tokens are defined in `src/app/globals.css` (`@import "tailwindcss"` + `@theme inline`), not a JS config.
 - `next.config.ts` pins `turbopack.root` to silence a workspace-root warning from a stray home-directory lockfile.
 
+## Design & branding
+
+The UI follows the Cabo Advisory brand: a warm cream canvas (`#f5f3ed`), white surfaces, and muted slate-blue accents (`#7797ae`), with dark-slate body text (`#2b3a44`) for legibility (the palette is intentionally low-contrast, so palette colours are used for surfaces/accents/large headings, never small body text). There is no dark mode.
+
+- **Tokens** live in `src/app/globals.css` (`@theme inline`): `background`, `surface`, `foreground`, `muted`, `border`/`border-strong`, `primary`/`primary-hover`, accents.
+- **Type**: Questrial (body), Oswald (in-app headings), Saira Stencil One (brand display) — loaded via `next/font`.
+- **Logo**: brand assets in `public/brand/` (`wordmark.svg`, `icon.svg`) are transparent crops of the originals (`public/logotype.svg`, `public/profile-icon.svg`); `wordmark.png` is the raster used in PDFs. The favicon is `src/app/icon.svg`. Override the on-screen report logo with `NEXT_PUBLIC_FIRM_LOGO_URL`; replace `public/brand/wordmark.png` to change the PDF logo.
+
 ## Dependencies
 
 **Runtime**

@@ -28,7 +28,7 @@ export function DeleteTimeEntryButton({ id }: { id: string }) {
       type="button"
       onClick={onClick}
       disabled={loading}
-      className="text-xs text-red-600 hover:underline disabled:opacity-50 dark:text-red-400"
+      className="text-xs text-red-700 hover:underline disabled:opacity-50"
     >
       {loading ? tc("deleting") : tc("delete")}
     </button>

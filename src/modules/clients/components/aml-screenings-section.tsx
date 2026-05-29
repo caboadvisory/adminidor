@@ -67,7 +67,7 @@ export function AmlScreeningsSection({
       {screenings.length === 0 ? (
         <p className="text-sm text-foreground/60">{t("aml.empty")}</p>
       ) : (
-        <ul className="divide-y divide-black/[.06] dark:divide-white/[.08]">
+        <ul className="divide-y divide-border">
           {screenings.map((s) => (
             <li
               key={s.id}
@@ -90,7 +90,7 @@ export function AmlScreeningsSection({
               <button
                 type="button"
                 onClick={() => onDelete(s.id)}
-                className="text-xs text-red-600 hover:underline dark:text-red-400"
+                className="text-xs text-red-700 hover:underline"
               >
                 {tc("delete")}
               </button>
@@ -101,7 +101,7 @@ export function AmlScreeningsSection({
 
       <form
         onSubmit={onSubmit}
-        className="grid gap-3 border-t border-black/[.06] pt-4 sm:grid-cols-2 dark:border-white/[.08]"
+        className="grid gap-3 border-t border-border pt-4 sm:grid-cols-2"
       >
         <Select name="screeningType" defaultValue="pep" aria-label={t("aml.type")}>
           {TYPES.map((ty) => (
@@ -123,7 +123,7 @@ export function AmlScreeningsSection({
           <Input name="notes" placeholder={t("aml.notes")} />
         </div>
         {error ? (
-          <p className="text-sm text-red-600 sm:col-span-2 dark:text-red-400">
+          <p className="text-sm text-red-700 sm:col-span-2">
             {error}
           </p>
         ) : null}

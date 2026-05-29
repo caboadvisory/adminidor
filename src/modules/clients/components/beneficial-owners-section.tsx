@@ -60,7 +60,7 @@ export function BeneficialOwnersSection({
       {owners.length === 0 ? (
         <p className="text-sm text-foreground/60">{t("ubo.empty")}</p>
       ) : (
-        <ul className="divide-y divide-black/[.06] dark:divide-white/[.08]">
+        <ul className="divide-y divide-border">
           {owners.map((o) => (
             <li
               key={o.id}
@@ -81,7 +81,7 @@ export function BeneficialOwnersSection({
               <button
                 type="button"
                 onClick={() => onDelete(o.id)}
-                className="text-xs text-red-600 hover:underline dark:text-red-400"
+                className="text-xs text-red-700 hover:underline"
               >
                 {tc("delete")}
               </button>
@@ -92,7 +92,7 @@ export function BeneficialOwnersSection({
 
       <form
         onSubmit={onSubmit}
-        className="grid gap-3 border-t border-black/[.06] pt-4 sm:grid-cols-2 dark:border-white/[.08]"
+        className="grid gap-3 border-t border-border pt-4 sm:grid-cols-2"
       >
         <Input name="fullName" required placeholder={t("ubo.fullName")} />
         <Input
@@ -113,7 +113,7 @@ export function BeneficialOwnersSection({
           <Input name="notes" placeholder={t("aml.notes")} />
         </div>
         {error ? (
-          <p className="text-sm text-red-600 sm:col-span-2 dark:text-red-400">
+          <p className="text-sm text-red-700 sm:col-span-2">
             {error}
           </p>
         ) : null}
