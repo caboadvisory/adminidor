@@ -49,18 +49,18 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     borderBottom: "1 solid #e5e5e5",
   },
-  logo: { height: 36, marginBottom: 6, objectFit: "contain" },
-  supplierLabel: {
-    fontSize: 7,
-    color: "#999999",
-    textTransform: "uppercase",
-    letterSpacing: 1,
-  },
+  logo: { height: 36, objectFit: "contain" },
   supplierName: { fontSize: 14, fontFamily: "Helvetica-Bold" },
   metaRight: { textAlign: "right" },
+  docTitle: {
+    fontSize: 14,
+    fontFamily: "Helvetica-Bold",
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    marginBottom: 4,
+  },
   metaLine: { fontSize: 9, marginBottom: 2 },
   metaKey: { color: "#999999" },
-  title: { fontSize: 16, fontFamily: "Helvetica-Bold", marginBottom: 14 },
   group: { marginBottom: 14 },
   groupHead: {
     flexDirection: "row",
@@ -130,11 +130,12 @@ function TimesheetDocument({
             {meta.logoUrl ? (
               // eslint-disable-next-line jsx-a11y/alt-text
               <Image src={meta.logoUrl} style={styles.logo} />
-            ) : null}
-            <Text style={styles.supplierLabel}>{meta.labels.supplier}</Text>
-            <Text style={styles.supplierName}>{meta.firmName}</Text>
+            ) : (
+              <Text style={styles.supplierName}>{meta.firmName}</Text>
+            )}
           </View>
           <View style={styles.metaRight}>
+            <Text style={styles.docTitle}>{meta.labels.title}</Text>
             <Text style={styles.metaLine}>
               <Text style={styles.metaKey}>{meta.labels.client}: </Text>
               {meta.clientName}
@@ -146,8 +147,6 @@ function TimesheetDocument({
             </Text>
           </View>
         </View>
-
-        <Text style={styles.title}>{meta.labels.title}</Text>
 
         {result.groups.map((g) => (
           <View key={g.projectId} style={styles.group} wrap={false}>

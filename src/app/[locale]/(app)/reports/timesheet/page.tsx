@@ -52,7 +52,6 @@ export default async function TimesheetReportPage({
         >
           ← {t("backToReports")}
         </Link>
-        <h1 className="mt-2 text-2xl font-semibold">{t("timesheet.title")}</h1>
       </div>
 
       <Card>
@@ -95,7 +94,7 @@ export default async function TimesheetReportPage({
       ) : result ? (
         <div className="space-y-6">
           <Card className="space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="flex items-center gap-3">
                 {FIRM_LOGO_URL ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -104,31 +103,32 @@ export default async function TimesheetReportPage({
                     alt={FIRM_NAME}
                     className="h-10 w-auto"
                   />
-                ) : null}
-                <div>
-                  <div className="text-xs uppercase tracking-wide text-foreground/40">
-                    {t("timesheet.supplier")}
-                  </div>
+                ) : (
                   <div className="text-lg font-semibold">{FIRM_NAME}</div>
-                </div>
+                )}
               </div>
-              <dl className="space-y-0.5 text-sm sm:text-right">
-                <div>
-                  <dt className="inline text-foreground/40">
-                    {t("timesheet.client")}:{" "}
-                  </dt>
-                  <dd className="inline">{selectedClient?.name ?? "—"}</dd>
+              <div className="sm:text-right">
+                <div className="text-lg font-semibold uppercase tracking-wide">
+                  {t("timesheet.title")}
                 </div>
-                <div>
-                  <dt className="inline text-foreground/40">
-                    {t("timesheet.period")}:{" "}
-                  </dt>
-                  <dd className="inline">
-                    {dateFmt.format(new Date(from))} –{" "}
-                    {dateFmt.format(new Date(to))}
-                  </dd>
-                </div>
-              </dl>
+                <dl className="mt-1 space-y-0.5 text-sm">
+                  <div>
+                    <dt className="inline text-foreground/40">
+                      {t("timesheet.client")}:{" "}
+                    </dt>
+                    <dd className="inline">{selectedClient?.name ?? "—"}</dd>
+                  </div>
+                  <div>
+                    <dt className="inline text-foreground/40">
+                      {t("timesheet.period")}:{" "}
+                    </dt>
+                    <dd className="inline">
+                      {dateFmt.format(new Date(from))} –{" "}
+                      {dateFmt.format(new Date(to))}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
             </div>
           </Card>
 
