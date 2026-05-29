@@ -222,6 +222,8 @@
       "client": "Client",
       "from": "From",
       "to": "To",
+      "supplier": "Supplier",
+      "period": "Period",
       "project": "Project",
       "subtotal": "Subtotal",
       "total": "Total",

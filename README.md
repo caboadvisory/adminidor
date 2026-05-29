@@ -35,7 +35,7 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 
 ### Reports
 
-- A reports hub (`/reports`). The first report — **Time sheet** (`/reports/timesheet`) — takes a **client** and a **date range** and lists all logged time for that client in the period (date, hours, description, cost), **grouped by project** with per-project subtotals and an overall total (per currency). The filter is encoded in the URL, so a report view is shareable. Read-only for all staff.
+- A reports hub (`/reports`). The first report — **Time sheet** (`/reports/timesheet`) — takes a **client** and a **date range** and lists all logged time for that client in the period (date, hours, description, cost), **grouped by project** with per-project subtotals and an overall total (per currency). It is headed by the configurable **supplier** (name + optional logo, see `NEXT_PUBLIC_FIRM_*`), the **client**, and the **period**. Non-billable entries are shown but excluded from cost totals. The filter is encoded in the URL, so a report view is shareable. Read-only for all staff.
 
 ## Tech stack
 
@@ -87,6 +87,8 @@ Secrets live in `.env.local` (gitignored). `.env.example` documents every variab
 | `R2_SECRET_ACCESS_KEY`          | Server only  | R2 secret key                                      |
 | `R2_BUCKET`                     | Server only  | R2 bucket name                                     |
 | `R2_ENDPOINT`                   | Server only  | Optional; overrides the endpoint derived from the account id |
+| `NEXT_PUBLIC_FIRM_NAME`         | Public       | Supplier/firm name on report headers (default: `Cabo Advisory SL`) |
+| `NEXT_PUBLIC_FIRM_LOGO_URL`     | Public       | Optional logo for report headers (URL or `/public` path)     |
 
 ## Authentication & roles
 

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { FIRM_LOGO_URL, FIRM_NAME } from "@/lib/firm";
 import { Link } from "@/i18n/navigation";
 import { listClients } from "@/modules/clients/queries";
 import { getTimesheet } from "@/modules/reports/queries";
@@ -28,6 +29,7 @@ export default async function TimesheetReportPage({
   const hasFilter = Boolean(clientId && from && to);
 
   const clients = await listClients();
+  const selectedClient = clients.find((c) => c.id === clientId) ?? null;
   const result = hasFilter
     ? await getTimesheet({ clientId, from, to })
     : null;
@@ -86,11 +88,53 @@ export default async function TimesheetReportPage({
         <Card className="text-sm text-foreground/60">
           {t("timesheet.selectPrompt")}
         </Card>
-      ) : result && result.groups.length === 0 ? (
-        <Card className="text-sm text-foreground/60">{t("timesheet.empty")}</Card>
       ) : result ? (
         <div className="space-y-6">
-          {result.groups.map((g) => (
+          <Card className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                {FIRM_LOGO_URL ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={FIRM_LOGO_URL}
+                    alt={FIRM_NAME}
+                    className="h-10 w-auto"
+                  />
+                ) : null}
+                <div>
+                  <div className="text-xs uppercase tracking-wide text-foreground/40">
+                    {t("timesheet.supplier")}
+                  </div>
+                  <div className="text-lg font-semibold">{FIRM_NAME}</div>
+                </div>
+              </div>
+              <dl className="space-y-0.5 text-sm sm:text-right">
+                <div>
+                  <dt className="inline text-foreground/40">
+                    {t("timesheet.client")}:{" "}
+                  </dt>
+                  <dd className="inline">{selectedClient?.name ?? "—"}</dd>
+                </div>
+                <div>
+                  <dt className="inline text-foreground/40">
+                    {t("timesheet.period")}:{" "}
+                  </dt>
+                  <dd className="inline">
+                    {dateFmt.format(new Date(from))} –{" "}
+                    {dateFmt.format(new Date(to))}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </Card>
+
+          {result.groups.length === 0 ? (
+            <Card className="text-sm text-foreground/60">
+              {t("timesheet.empty")}
+            </Card>
+          ) : (
+            <>
+              {result.groups.map((g) => (
             <Card key={g.projectId} className="space-y-3 overflow-x-auto p-0">
               <div className="flex items-center justify-between gap-4 px-4 pt-4">
                 <h2 className="font-medium">{g.projectName ?? "—"}</h2>
@@ -171,6 +215,8 @@ export default async function TimesheetReportPage({
               ))}
             </span>
           </Card>
+            </>
+          )}
         </div>
       ) : null}
     </div>

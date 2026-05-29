@@ -222,6 +222,8 @@
       "client": "Cliente",
       "from": "Desde",
       "to": "Hasta",
+      "supplier": "Proveedor",
+      "period": "Periodo",
       "project": "Proyecto",
       "subtotal": "Subtotal",
       "total": "Total",

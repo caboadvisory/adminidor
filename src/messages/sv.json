@@ -222,6 +222,8 @@
       "client": "Klient",
       "from": "Från",
       "to": "Till",
+      "supplier": "Leverantör",
+      "period": "Period",
       "project": "Projekt",
       "subtotal": "Delsumma",
       "total": "Totalt",
