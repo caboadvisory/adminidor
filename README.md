@@ -11,6 +11,7 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 | **Time reporting** | Built | Entries linked to a project + user: date, duration, task, billable flag, and an auto-calculated (editable) price |
 | **Reports** | Built | Time sheet: logged time + cost for a client over a period, grouped by project |
 | **Admin** | Built | Admin-only: manage users (add/edit/deactivate) and export all time entries to CSV |
+| **Assistant** | Built | Natural-language chat (Anthropic API) to ask about firm data and log time; read-only RLS-scoped tools + confirm-before-commit time entry |
 
 ### Clients — KYC / AML
 
@@ -44,6 +45,13 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
 - **Export**: all time entries to **CSV** — columns: client, project, user, date, hours, description, cost, currency.
 - Uses a service-role Supabase client (`src/lib/supabase/admin.ts`) for the Auth admin API; only ever called from admin-gated server actions / routes.
 
+### Assistant
+
+- A chat UI (`/assistant`) where staff ask about firm data in plain language and **log time by sentence** (e.g. *"3h on the Acme contract review yesterday, billable"*). Runs server-side on the **Anthropic API** (Claude Opus 4.8, adaptive thinking, streaming, prompt-cached), with `ANTHROPIC_API_KEY` from `.env.local` (feature hides if unset).
+- **Data access is read-only tools** (`src/modules/assistant/tools.ts`) that wrap existing module queries and run under the user's authenticated Supabase client — **RLS applies**, so the assistant only sees what the user may see. No raw SQL.
+- **Logging time is confirm-before-commit**: the model `propose_time_entry` tool drafts an entry (project, date, hours, computed amount, billable) and the chat shows a confirmation card; the actual write happens only when the user clicks **Log it** (via the existing `createTimeEntry`). Create-only, the user's own time.
+- **History is persisted and per-user-private** (owner-only RLS) — conversations are not shared, admins included.
+
 ## Tech stack
 
 - **Next.js 16** (App Router, Turbopack) + **React 19** + **TypeScript** (strict)
@@ -70,6 +78,7 @@ A modular administrative web app for a small consultancy / law firm. Modern, cle
    - `supabase/migrations/0003_billing_rates.sql`
    - `supabase/migrations/0004_default_currency_eur.sql`
    - `supabase/migrations/0005_document_kind.sql`
+   - `supabase/migrations/0006_assistant.sql`
 4. Configure the **R2 bucket CORS** policy so the browser can upload (see [File storage](#file-storage-cloudflare-r2)).
 5. Create an admin user (see [Authentication & roles](#authentication--roles)).
 6. Run the dev server:
@@ -97,6 +106,8 @@ Secrets live in `.env.local` (gitignored). `.env.example` documents every variab
 | `R2_ENDPOINT`                   | Server only  | Optional; overrides the endpoint derived from the account id |
 | `NEXT_PUBLIC_FIRM_NAME`         | Public       | Supplier/firm name on report headers (default: `Cabo Advisory SL`) |
 | `NEXT_PUBLIC_FIRM_LOGO_URL`     | Public       | Optional logo for report headers (URL or `/public` path)     |
+| `ANTHROPIC_API_KEY`             | Server only  | Powers the Assistant module; leave blank to disable it       |
+| `ASSISTANT_MODEL`               | Server only  | Optional model override (default `claude-opus-4-8`)          |
 
 ## Authentication & roles
 

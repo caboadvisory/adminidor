@@ -9,6 +9,7 @@
     "projects": "Proyectos",
     "time": "Registro de horas",
     "reports": "Informes",
+    "assistant": "Asistente",
     "admin": "Administración"
   },
   "auth": {
@@ -313,6 +314,32 @@
       "selfDeactivate": "No puedes desactivar tu propia cuenta.",
       "notConfigured": "La API de administración no está configurada (falta la clave service role).",
       "generic": "Algo salió mal. Inténtalo de nuevo."
+    }
+  },
+  "assistant": {
+    "title": "Asistente",
+    "subtitle": "Pregunta sobre tus datos o registra horas en lenguaje natural.",
+    "newChat": "Nuevo chat",
+    "untitled": "Sin título",
+    "noConversations": "Aún no hay conversaciones.",
+    "placeholder": "Haz una pregunta, o di p. ej. \"registra 2h en Acme hoy\"…",
+    "send": "Enviar",
+    "emptyThread": "Pregunta sobre clientes, proyectos u horas — o registra horas en una frase.",
+    "error": "Algo salió mal. Inténtalo de nuevo.",
+    "notConfigured": "El Asistente no está configurado. Añade ANTHROPIC_API_KEY en .env.local.",
+    "proposal": {
+      "title": "¿Registrar este registro de horas?",
+      "project": "Proyecto",
+      "client": "Cliente",
+      "date": "Fecha",
+      "hours": "Horas",
+      "amount": "Importe",
+      "billable": "Facturable",
+      "yes": "Sí",
+      "no": "No",
+      "logIt": "Registrar",
+      "logging": "Registrando…",
+      "dismiss": "Descartar"
     }
   },
   "common": {

@@ -9,6 +9,7 @@
     "projects": "Projects",
     "time": "Time reporting",
     "reports": "Reports",
+    "assistant": "Assistant",
     "admin": "Admin"
   },
   "auth": {
@@ -313,6 +314,32 @@
       "selfDeactivate": "You can't deactivate your own account.",
       "notConfigured": "Admin API is not configured (service role key missing).",
       "generic": "Something went wrong. Please try again."
+    }
+  },
+  "assistant": {
+    "title": "Assistant",
+    "subtitle": "Ask about your data or log time in plain language.",
+    "newChat": "New chat",
+    "untitled": "Untitled",
+    "noConversations": "No conversations yet.",
+    "placeholder": "Ask a question, or say e.g. \"log 2h on Acme today\"…",
+    "send": "Send",
+    "emptyThread": "Ask anything about clients, projects or time — or log time in a sentence.",
+    "error": "Something went wrong. Please try again.",
+    "notConfigured": "The Assistant is not configured. Add ANTHROPIC_API_KEY to .env.local.",
+    "proposal": {
+      "title": "Log this time entry?",
+      "project": "Project",
+      "client": "Client",
+      "date": "Date",
+      "hours": "Hours",
+      "amount": "Amount",
+      "billable": "Billable",
+      "yes": "Yes",
+      "no": "No",
+      "logIt": "Log it",
+      "logging": "Logging…",
+      "dismiss": "Dismiss"
     }
   },
   "common": {

@@ -9,6 +9,7 @@
     "projects": "Projekt",
     "time": "Tidrapportering",
     "reports": "Rapporter",
+    "assistant": "Assistent",
     "admin": "Admin"
   },
   "auth": {
@@ -313,6 +314,32 @@
       "selfDeactivate": "Du kan inte inaktivera ditt eget konto.",
       "notConfigured": "Admin-API är inte konfigurerat (service role-nyckel saknas).",
       "generic": "Något gick fel. Försök igen."
+    }
+  },
+  "assistant": {
+    "title": "Assistent",
+    "subtitle": "Ställ frågor om dina data eller registrera tid på vanligt språk.",
+    "newChat": "Ny chatt",
+    "untitled": "Namnlös",
+    "noConversations": "Inga konversationer ännu.",
+    "placeholder": "Ställ en fråga, eller säg t.ex. \"registrera 2h på Acme idag\"…",
+    "send": "Skicka",
+    "emptyThread": "Fråga om klienter, projekt eller tid – eller registrera tid i en mening.",
+    "error": "Något gick fel. Försök igen.",
+    "notConfigured": "Assistenten är inte konfigurerad. Lägg till ANTHROPIC_API_KEY i .env.local.",
+    "proposal": {
+      "title": "Registrera denna tidspost?",
+      "project": "Projekt",
+      "client": "Klient",
+      "date": "Datum",
+      "hours": "Timmar",
+      "amount": "Belopp",
+      "billable": "Fakturerbar",
+      "yes": "Ja",
+      "no": "Nej",
+      "logIt": "Registrera",
+      "logging": "Registrerar…",
+      "dismiss": "Avfärda"
     }
   },
   "common": {

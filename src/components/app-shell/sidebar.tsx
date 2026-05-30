@@ -10,6 +10,7 @@ const baseItems = [
   { href: "/projects", key: "projects" },
   { href: "/time", key: "time" },
   { href: "/reports", key: "reports" },
+  { href: "/assistant", key: "assistant" },
 ];
 
 export function Sidebar({ isAdmin }: { isAdmin: boolean }) {
