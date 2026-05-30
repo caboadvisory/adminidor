@@ -1,3 +1,4 @@
+import "server-only";
 import { S3Client } from "@aws-sdk/client-s3";
 import { R2_ACCESS_KEY_ID, R2_ENDPOINT, R2_SECRET_ACCESS_KEY } from "./config";
 

@@ -6,7 +6,11 @@ import { minutesToHours } from "@/modules/time/display";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 function csvCell(value: string | number | null | undefined): string {
-  const s = value == null ? "" : String(value);
+  let s = value == null ? "" : String(value);
+  // Neutralize spreadsheet formula injection: a cell beginning with one of
+  // these characters is treated as a formula by Excel/Sheets/LibreOffice and
+  // would execute on open. Prefix with a single quote to force it to text.
+  if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
   return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 

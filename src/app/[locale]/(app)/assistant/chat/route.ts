@@ -2,6 +2,7 @@ import type Anthropic from "@anthropic-ai/sdk";
 import { getAnthropic } from "@/lib/anthropic/client";
 import { ASSISTANT_MODEL, isAssistantConfigured } from "@/lib/anthropic/config";
 import { getCurrentUser, isCurrentUserAdmin } from "@/lib/supabase/auth";
+import { rateLimit } from "@/lib/rate-limit";
 import { ASSISTANT_TOOLS, executeTool } from "@/modules/assistant/tools";
 import { buildAssistantSystemPrompt } from "@/modules/assistant/prompt";
 import {
@@ -30,6 +31,20 @@ export async function POST(
   if (!user) return Response.json({ error: "unauthorized" }, { status: 401 });
   if (!isAssistantConfigured())
     return Response.json({ error: "not_configured" }, { status: 503 });
+
+  // Each request fans out to several Opus calls — rate-limit per user to cap
+  // API-cost / DoS exposure. 20 messages per rolling minute is generous for
+  // interactive use.
+  const limit = rateLimit(`assistant:${user.id}`, 20, 60_000);
+  if (!limit.ok) {
+    return Response.json(
+      { error: "rate_limited" },
+      {
+        status: 429,
+        headers: { "Retry-After": String(limit.retryAfterSeconds) },
+      },
+    );
+  }
 
   const body = await request.json().catch(() => null);
   const message =

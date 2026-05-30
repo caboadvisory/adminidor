@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isCurrentUserAdmin } from "@/lib/supabase/auth";
 import type { AdminUser, UserRole } from "./types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -21,6 +22,10 @@ function toAdminUser(u: any, profile: any): AdminUser {
 }
 
 export async function listUsers(): Promise<AdminUser[]> {
+  // Gate the RLS-bypassing service-role access at the data layer, not just at
+  // the calling page — this function enumerates every user's email.
+  if (!(await isCurrentUserAdmin())) throw new Error("forbidden");
+
   const admin = createAdminClient();
 
   const { data, error } = await admin.auth.admin.listUsers({
@@ -42,6 +47,8 @@ export async function listUsers(): Promise<AdminUser[]> {
 }
 
 export async function getAdminUser(id: string): Promise<AdminUser | null> {
+  if (!(await isCurrentUserAdmin())) throw new Error("forbidden");
+
   const admin = createAdminClient();
 
   const { data, error } = await admin.auth.admin.getUserById(id);

@@ -13,6 +13,10 @@ import {
 } from "@/modules/documents/actions";
 import type { DocumentOwnerType, StoredDocument } from "@/modules/documents/types";
 
+// Mirrors the server-enforced cap in src/lib/r2/config.ts (client-side
+// pre-check only; the presigned PUT is the authoritative limit).
+const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+
 function formatSize(bytes: number | null) {
   if (bytes == null) return "";
   if (bytes < 1024) return `${bytes} B`;
@@ -51,11 +55,17 @@ export function DocumentsSection({
     if (!file) return;
     const contentType = file.type || "application/octet-stream";
 
+    if (file.size > MAX_UPLOAD_BYTES) {
+      setError(t("tooLarge"));
+      return;
+    }
+
     setUploading(true);
     try {
       const { url, key } = await requestUploadUrl({
         fileName: file.name,
         contentType,
+        size: file.size,
         ownerType,
         ownerId,
       });

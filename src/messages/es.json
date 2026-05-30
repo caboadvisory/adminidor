@@ -165,7 +165,8 @@
     "report": "Informe",
     "empty": "No hay documentos subidos.",
     "notConfigured": "El almacenamiento de archivos no está configurado.",
-    "error": "La subida falló. Inténtalo de nuevo."
+    "error": "La subida falló. Inténtalo de nuevo.",
+    "tooLarge": "El archivo es demasiado grande (máx. 25 MB)."
   },
   "projects": {
     "title": "Proyectos",

@@ -165,7 +165,8 @@
     "report": "Rapport",
     "empty": "Inga dokument uppladdade.",
     "notConfigured": "Fillagring är inte konfigurerad.",
-    "error": "Uppladdningen misslyckades. Försök igen."
+    "error": "Uppladdningen misslyckades. Försök igen.",
+    "tooLarge": "Filen är för stor (max 25 MB)."
   },
   "projects": {
     "title": "Projekt",

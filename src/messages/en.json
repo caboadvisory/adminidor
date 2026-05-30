@@ -165,7 +165,8 @@
     "report": "Report",
     "empty": "No documents uploaded.",
     "notConfigured": "File storage is not configured.",
-    "error": "Upload failed. Please try again."
+    "error": "Upload failed. Please try again.",
+    "tooLarge": "File is too large (max 25 MB)."
   },
   "projects": {
     "title": "Projects",

@@ -32,6 +32,14 @@ export async function attachDocument(input: unknown): Promise<Result> {
   const { supabase, user } = await getUser();
   if (!user) return { ok: false, error: "forbidden" };
 
+  // Bind the stored R2 key to its owner: the key must live under this owner's
+  // prefix (as minted by requestUploadUrl). Stops a caller from registering a
+  // document row that points at an object under a different owner's prefix.
+  const expectedPrefix = `${parsed.data.ownerType}/${parsed.data.ownerId}/`;
+  if (!parsed.data.r2Key.startsWith(expectedPrefix)) {
+    return { ok: false, error: "invalid_key" };
+  }
+
   const { error } = await supabase.from("documents").insert({
     owner_type: parsed.data.ownerType,
     owner_id: parsed.data.ownerId,

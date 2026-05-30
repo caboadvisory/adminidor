@@ -114,6 +114,28 @@ const ok = (data: unknown): ToolOutcome => ({ result: JSON.stringify(data) });
 const fail = (message: string): ToolOutcome =>
   ({ result: JSON.stringify({ error: message }) });
 
+const MAX_TEXT = 2000; // cap free-text fields fed back into the model
+const MAX_NESTED = 50; // cap nested arrays (UBOs / screenings)
+
+function clampText<T>(v: T): T {
+  return typeof v === "string" && v.length > MAX_TEXT
+    ? ((v.slice(0, MAX_TEXT) + "…[truncated]") as unknown as T)
+    : v;
+}
+
+// Keep a single full client record from ballooning the context: truncate long
+// free text and cap nested arrays.
+function clampClient(client: any): any {
+  if (!client || typeof client !== "object") return client;
+  const c = { ...client };
+  if (typeof c.notes === "string") c.notes = clampText(c.notes);
+  if (Array.isArray(c.beneficial_owners))
+    c.beneficial_owners = c.beneficial_owners.slice(0, MAX_NESTED);
+  if (Array.isArray(c.aml_screenings))
+    c.aml_screenings = c.aml_screenings.slice(0, MAX_NESTED);
+  return c;
+}
+
 export async function executeTool(
   name: string,
   input: any,
@@ -128,7 +150,7 @@ export async function executeTool(
       case "get_client": {
         if (!input?.client_id) return fail("client_id is required");
         const client = await getClient(String(input.client_id));
-        return client ? ok(client) : fail("Client not found");
+        return client ? ok(clampClient(client)) : fail("Client not found");
       }
       case "list_projects": {
         const projects = await listProjects();
@@ -160,7 +182,7 @@ export async function executeTool(
             date: e.workDate,
             project: e.projectName,
             hours: minutesToHours(e.minutes),
-            description: e.description,
+            description: clampText(e.description),
             billable: e.billable,
             amount: e.amount,
             currency: e.currency,
