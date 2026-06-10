@@ -85,7 +85,7 @@ export async function createClient(input: unknown): Promise<CreateResult> {
     .select("id")
     .single();
 
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "generic" };
 
   await revalidateClient(data.id);
   return { ok: true, id: data.id };
@@ -120,16 +120,18 @@ export async function updateClient(
     kycVerifiedBy = null;
   }
 
-  const { error } = await supabase
+  const { data: updated, error } = await supabase
     .from("clients")
     .update({
       ...clientRow(parsed.data),
       kyc_verified_at: kycVerifiedAt,
       kyc_verified_by: kycVerifiedBy,
     })
-    .eq("id", id);
+    .eq("id", id)
+    .select("id");
 
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "generic" };
+  if (!updated || updated.length === 0) return { ok: false, error: "forbidden" };
 
   await revalidateClient(id);
   return { ok: true };
@@ -139,8 +141,13 @@ export async function deleteClient(id: string): Promise<ActionResult> {
   const { supabase, user, isAdmin } = await getUserAndRole();
   if (!user || !isAdmin) return { ok: false, error: "forbidden" };
 
-  const { error } = await supabase.from("clients").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  const { data: deleted, error } = await supabase
+    .from("clients")
+    .delete()
+    .eq("id", id)
+    .select("id");
+  if (error) return { ok: false, error: "generic" };
+  if (!deleted || deleted.length === 0) return { ok: false, error: "forbidden" };
 
   await revalidateClient(id);
   return { ok: true };
@@ -168,7 +175,7 @@ export async function addBeneficialOwner(
     notes: parsed.data.notes,
   });
 
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "generic" };
 
   await revalidateClient(clientId);
   return { ok: true };
@@ -181,11 +188,13 @@ export async function deleteBeneficialOwner(
   const { supabase, user, isAdmin } = await getUserAndRole();
   if (!user || !isAdmin) return { ok: false, error: "forbidden" };
 
-  const { error } = await supabase
+  const { data: deleted, error } = await supabase
     .from("beneficial_owners")
     .delete()
-    .eq("id", id);
-  if (error) return { ok: false, error: error.message };
+    .eq("id", id)
+    .select("id");
+  if (error) return { ok: false, error: "generic" };
+  if (!deleted || deleted.length === 0) return { ok: false, error: "forbidden" };
 
   await revalidateClient(clientId);
   return { ok: true };
@@ -213,7 +222,7 @@ export async function addAmlScreening(
     screened_by: user.id,
   });
 
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "generic" };
 
   await revalidateClient(clientId);
   return { ok: true };
@@ -226,8 +235,13 @@ export async function deleteAmlScreening(
   const { supabase, user, isAdmin } = await getUserAndRole();
   if (!user || !isAdmin) return { ok: false, error: "forbidden" };
 
-  const { error } = await supabase.from("aml_screenings").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  const { data: deleted, error } = await supabase
+    .from("aml_screenings")
+    .delete()
+    .eq("id", id)
+    .select("id");
+  if (error) return { ok: false, error: "generic" };
+  if (!deleted || deleted.length === 0) return { ok: false, error: "forbidden" };
 
   await revalidateClient(clientId);
   return { ok: true };

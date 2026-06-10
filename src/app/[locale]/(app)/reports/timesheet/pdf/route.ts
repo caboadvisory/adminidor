@@ -1,5 +1,7 @@
+import { logAuditEvent } from "@/lib/audit";
 import { FIRM_NAME } from "@/lib/firm";
 import { getCurrentUser } from "@/lib/supabase/auth";
+import { createClient } from "@/lib/supabase/server";
 import { listClients } from "@/modules/clients/queries";
 import { buildTimesheetLabels } from "@/modules/reports/labels";
 import { getPdfLogoDataUri } from "@/modules/reports/pdf-logo";
@@ -22,6 +24,14 @@ export async function GET(
   if (!clientId || !from || !to) {
     return new Response("Missing clientId, from or to", { status: 400 });
   }
+
+  const supabase = await createClient();
+  await logAuditEvent(
+    supabase,
+    "report.timesheet.download",
+    clientId,
+    `${from}..${to}`,
+  );
 
   const [result, clients, labels, logoUrl] = await Promise.all([
     getTimesheet({ clientId, from, to }),

@@ -123,16 +123,31 @@ function clampText<T>(v: T): T {
     : v;
 }
 
-// Keep a single full client record from ballooning the context: truncate long
-// free text and cap nested arrays.
+// Minimize + clamp a single client record before it egresses to the Anthropic
+// API: redact the national identifier and raw AML notes (special-category /
+// regulated data that should stay on the firm's systems), truncate long free
+// text, and cap nested arrays. NOTE: getClient() returns camelCase keys.
 function clampClient(client: any): any {
   if (!client || typeof client !== "object") return client;
   const c = { ...client };
+  // Never send the national ID / tax number to the model.
+  if (c.nationalId != null) c.nationalId = "[redacted]";
   if (typeof c.notes === "string") c.notes = clampText(c.notes);
-  if (Array.isArray(c.beneficial_owners))
-    c.beneficial_owners = c.beneficial_owners.slice(0, MAX_NESTED);
-  if (Array.isArray(c.aml_screenings))
-    c.aml_screenings = c.aml_screenings.slice(0, MAX_NESTED);
+  if (Array.isArray(c.beneficialOwners))
+    c.beneficialOwners = c.beneficialOwners
+      .slice(0, MAX_NESTED)
+      .map((o: any) => ({
+        ...o,
+        notes: typeof o?.notes === "string" ? clampText(o.notes) : o?.notes,
+      }));
+  if (Array.isArray(c.amlScreenings))
+    c.amlScreenings = c.amlScreenings.slice(0, MAX_NESTED).map((s: any) => ({
+      ...s,
+      // Keep type/result/provider (so the assistant can answer "any AML hit?")
+      // but drop the free-text hit detail.
+      notes: s?.notes ? "[redacted]" : s?.notes,
+    }));
+  if (Array.isArray(c.documents)) c.documents = c.documents.slice(0, MAX_NESTED);
   return c;
 }
 

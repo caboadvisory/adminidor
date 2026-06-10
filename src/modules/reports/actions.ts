@@ -3,6 +3,8 @@
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { getLocale } from "next-intl/server";
+import { z } from "zod";
+import { logAuditEvent } from "@/lib/audit";
 import { FIRM_NAME } from "@/lib/firm";
 import { isR2Configured } from "@/lib/r2/config";
 import { putObject } from "@/lib/r2/storage";
@@ -14,15 +16,18 @@ import { getTimesheet } from "./queries";
 
 export type ApproveResult = { ok: true } | { ok: false; error: string };
 
+const approveSchema = z.object({
+  clientId: z.string().uuid(),
+  from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+});
+
 // Generates the time sheet PDF and stores it on the client as a 'report'
 // document. Admin only.
-export async function approveTimesheet(input: {
-  clientId: string;
-  from: string;
-  to: string;
-}): Promise<ApproveResult> {
-  const { clientId, from, to } = input;
-  if (!clientId || !from || !to) return { ok: false, error: "validation" };
+export async function approveTimesheet(input: unknown): Promise<ApproveResult> {
+  const parsed = approveSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "validation" };
+  const { clientId, from, to } = parsed.data;
 
   const supabase = await createServerSupabase();
   const {
@@ -76,8 +81,9 @@ export async function approveTimesheet(input: {
     uploaded_by: user.id,
     kind: "report",
   });
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "generic" };
 
+  await logAuditEvent(supabase, "report.approve", clientId, `${from}..${to}`);
   revalidatePath(`/${locale}/clients/${clientId}`);
   return { ok: true };
 }

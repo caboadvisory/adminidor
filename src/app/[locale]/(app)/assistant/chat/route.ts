@@ -50,8 +50,15 @@ export async function POST(
   const message =
     body && typeof body.message === "string" ? body.message.trim() : "";
   if (!message) return Response.json({ error: "empty" }, { status: 400 });
-  const conversationIdIn =
+  if (message.length > 8000)
+    return Response.json({ error: "too_long" }, { status: 413 });
+  const rawConversationId =
     body && typeof body.conversationId === "string" ? body.conversationId : null;
+  const UUID_RE =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if (rawConversationId && !UUID_RE.test(rawConversationId))
+    return Response.json({ error: "invalid_conversation" }, { status: 400 });
+  const conversationIdIn = rawConversationId;
 
   // Ensure a conversation and persist the user's message.
   let conversationId = conversationIdIn;

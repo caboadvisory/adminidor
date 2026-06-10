@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { getLocale } from "next-intl/server";
+import { z } from "zod";
+import { logAuditEvent } from "@/lib/audit";
 import { isR2Configured } from "@/lib/r2/config";
 import { createDownloadUrl } from "@/lib/r2/presign";
 import { deleteObject } from "@/lib/r2/storage";
@@ -10,6 +12,12 @@ import { documentMetaSchema } from "./schema";
 import type { DocumentOwnerType } from "./types";
 
 type Result = { ok: true } | { ok: false; error: string };
+
+const deleteDocumentSchema = z.object({
+  id: z.string().uuid(),
+  ownerType: z.enum(["client", "project"]),
+  ownerId: z.string().uuid(),
+});
 
 async function getUser() {
   const supabase = await createServerSupabase();
@@ -49,29 +57,41 @@ export async function attachDocument(input: unknown): Promise<Result> {
     size_bytes: parsed.data.sizeBytes ?? null,
     uploaded_by: user.id,
   });
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "generic" };
 
+  await logAuditEvent(
+    supabase,
+    "document.upload",
+    parsed.data.ownerId,
+    parsed.data.fileName,
+  );
   await revalidateOwner(parsed.data.ownerType, parsed.data.ownerId);
   return { ok: true };
 }
 
-export async function deleteDocument(input: {
-  id: string;
-  ownerType: DocumentOwnerType;
-  ownerId: string;
-}): Promise<Result> {
+export async function deleteDocument(input: unknown): Promise<Result> {
+  const parsed = deleteDocumentSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "validation" };
+  const { id, ownerType, ownerId } = parsed.data;
+
   const { supabase, user } = await getUser();
   if (!user) return { ok: false, error: "forbidden" };
 
-  const { data: doc, error: fetchError } = await supabase
+  const { data: doc } = await supabase
     .from("documents")
     .select("r2_key")
-    .eq("id", input.id)
+    .eq("id", id)
     .maybeSingle();
-  if (fetchError) return { ok: false, error: fetchError.message };
 
-  const { error } = await supabase.from("documents").delete().eq("id", input.id);
-  if (error) return { ok: false, error: error.message };
+  // .select() so an RLS denial (not uploader/admin) returns zero rows rather
+  // than a silent success.
+  const { data: deleted, error } = await supabase
+    .from("documents")
+    .delete()
+    .eq("id", id)
+    .select("id");
+  if (error) return { ok: false, error: "generic" };
+  if (!deleted || deleted.length === 0) return { ok: false, error: "forbidden" };
 
   if (doc?.r2_key && isR2Configured()) {
     try {
@@ -81,7 +101,8 @@ export async function deleteDocument(input: {
     }
   }
 
-  await revalidateOwner(input.ownerType, input.ownerId);
+  await logAuditEvent(supabase, "document.delete", id);
+  await revalidateOwner(ownerType, ownerId);
   return { ok: true };
 }
 
@@ -94,11 +115,14 @@ export async function getDocumentDownloadUrl(
 
   const { data: doc, error } = await supabase
     .from("documents")
-    .select("r2_key")
+    .select("r2_key, file_name")
     .eq("id", id)
     .maybeSingle();
   if (error || !doc) return { ok: false, error: "not_found" };
 
-  const url = await createDownloadUrl(doc.r2_key);
+  // Record the access (KYC/AML documents are regulated material).
+  await logAuditEvent(supabase, "document.download", id, doc.file_name);
+
+  const url = await createDownloadUrl(doc.r2_key, doc.file_name);
   return { ok: true, url };
 }

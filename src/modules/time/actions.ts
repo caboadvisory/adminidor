@@ -81,7 +81,7 @@ export async function createTimeEntry(input: unknown): Promise<CreateResult> {
     .select("id")
     .single();
 
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "generic" };
 
   await revalidate(parsed.data.projectId);
   return { ok: true, id: data.id };
@@ -101,7 +101,7 @@ export async function updateTimeEntry(
   const rate = await resolveRate(supabase, parsed.data.projectId);
   const amount = computeAmount(rate, minutes, parsed.data.amount);
 
-  const { error } = await supabase
+  const { data: updated, error } = await supabase
     .from("time_entries")
     .update({
       project_id: parsed.data.projectId,
@@ -112,9 +112,11 @@ export async function updateTimeEntry(
       unit_rate: rate,
       amount,
     })
-    .eq("id", id);
+    .eq("id", id)
+    .select("id");
 
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "generic" };
+  if (!updated || updated.length === 0) return { ok: false, error: "forbidden" };
 
   await revalidate(parsed.data.projectId);
   return { ok: true };
@@ -130,8 +132,13 @@ export async function deleteTimeEntry(id: string): Promise<ActionResult> {
     .eq("id", id)
     .maybeSingle();
 
-  const { error } = await supabase.from("time_entries").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  const { data: deleted, error } = await supabase
+    .from("time_entries")
+    .delete()
+    .eq("id", id)
+    .select("id");
+  if (error) return { ok: false, error: "generic" };
+  if (!deleted || deleted.length === 0) return { ok: false, error: "forbidden" };
 
   await revalidate(existing?.project_id ?? null);
   return { ok: true };

@@ -58,7 +58,7 @@ export async function createProject(input: unknown): Promise<CreateResult> {
     .select("id")
     .single();
 
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "generic" };
 
   await revalidateProject(data.id);
   return { ok: true, id: data.id };
@@ -74,12 +74,14 @@ export async function updateProject(
   const { supabase, user, isAdmin } = await getUserAndRole();
   if (!user || !isAdmin) return { ok: false, error: "forbidden" };
 
-  const { error } = await supabase
+  const { data: updated, error } = await supabase
     .from("projects")
     .update(projectRow(parsed.data))
-    .eq("id", id);
+    .eq("id", id)
+    .select("id");
 
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: "generic" };
+  if (!updated || updated.length === 0) return { ok: false, error: "forbidden" };
 
   await revalidateProject(id);
   return { ok: true };
@@ -89,8 +91,13 @@ export async function deleteProject(id: string): Promise<ActionResult> {
   const { supabase, user, isAdmin } = await getUserAndRole();
   if (!user || !isAdmin) return { ok: false, error: "forbidden" };
 
-  const { error } = await supabase.from("projects").delete().eq("id", id);
-  if (error) return { ok: false, error: error.message };
+  const { data: deleted, error } = await supabase
+    .from("projects")
+    .delete()
+    .eq("id", id)
+    .select("id");
+  if (error) return { ok: false, error: "generic" };
+  if (!deleted || deleted.length === 0) return { ok: false, error: "forbidden" };
 
   await revalidateProject(id);
   return { ok: true };

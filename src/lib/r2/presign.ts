@@ -25,8 +25,17 @@ export function createUploadUrl(
 
 export function createDownloadUrl(
   key: string,
+  fileName?: string,
   expiresIn = DEFAULT_EXPIRES_IN,
 ): Promise<string> {
-  const command = new GetObjectCommand({ Bucket: R2_BUCKET, Key: key });
+  // Force download (attachment) rather than inline rendering — defense in depth
+  // so a stored object can never be served inline. The content-type allowlist
+  // already excludes SVG/HTML; this removes the residual coupling.
+  const safeName = (fileName ?? "download").replace(/[^\w.\- ]+/g, "_");
+  const command = new GetObjectCommand({
+    Bucket: R2_BUCKET,
+    Key: key,
+    ResponseContentDisposition: `attachment; filename="${safeName}"`,
+  });
   return getSignedUrl(getR2Client(), command, { expiresIn });
 }

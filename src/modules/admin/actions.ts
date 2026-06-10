@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { getLocale } from "next-intl/server";
+import { logAuditEvent } from "@/lib/audit";
 import { createAdminClient, isAdminApiConfigured } from "@/lib/supabase/admin";
 import { createClient as createServerSupabase } from "@/lib/supabase/server";
 import { createUserSchema, updateUserSchema } from "./schema";
@@ -10,7 +11,7 @@ export type AdminActionResult = { ok: true } | { ok: false; error: string };
 
 const BAN_DURATION = "876000h"; // ~100 years = effectively deactivated
 
-async function requireAdmin(): Promise<{ userId: string } | null> {
+async function requireAdmin() {
   const supabase = await createServerSupabase();
   const {
     data: { user },
@@ -22,7 +23,9 @@ async function requireAdmin(): Promise<{ userId: string } | null> {
     .eq("id", user.id)
     .maybeSingle();
   if (profile?.role !== "admin") return null;
-  return { userId: user.id };
+  // Return the RLS-scoped client too so audit events attribute the acting admin
+  // (the service-role client used below has a null auth.uid()).
+  return { userId: user.id, supabase };
 }
 
 async function revalidateAdmin() {
@@ -60,6 +63,12 @@ export async function createUser(input: unknown): Promise<AdminActionResult> {
     .eq("id", data.user.id);
   if (profileError) return { ok: false, error: profileError.message };
 
+  await logAuditEvent(
+    admin.supabase,
+    "user.create",
+    data.user.id,
+    `${parsed.data.email} (${parsed.data.role})`,
+  );
   await revalidateAdmin();
   return { ok: true };
 }
@@ -98,6 +107,12 @@ export async function updateUser(
     if (error) return { ok: false, error: error.message };
   }
 
+  await logAuditEvent(
+    admin.supabase,
+    "user.update",
+    id,
+    `role=${parsed.data.role}`,
+  );
   await revalidateAdmin();
   return { ok: true };
 }
@@ -121,6 +136,11 @@ export async function setUserActive(
   });
   if (error) return { ok: false, error: error.message };
 
+  await logAuditEvent(
+    admin.supabase,
+    active ? "user.activate" : "user.deactivate",
+    id,
+  );
   await revalidateAdmin();
   return { ok: true };
 }

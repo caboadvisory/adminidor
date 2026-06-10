@@ -1,3 +1,4 @@
+import { logAuditEvent } from "@/lib/audit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isCurrentUserAdmin } from "@/lib/supabase/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -26,7 +27,14 @@ export async function GET() {
       "work_date, minutes, description, amount, user_id, projects!inner(name, currency, clients(name)), profiles(full_name)",
     )
     .order("work_date", { ascending: true });
-  if (error) return new Response(error.message, { status: 500 });
+  if (error) return new Response("Export failed", { status: 500 });
+
+  await logAuditEvent(
+    supabase,
+    "time_entries.export",
+    null,
+    `${data?.length ?? 0} rows`,
+  );
 
   // Fall back to email when a user has no full name.
   const admin = createAdminClient();
